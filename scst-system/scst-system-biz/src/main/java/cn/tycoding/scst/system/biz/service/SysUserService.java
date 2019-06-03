@@ -54,6 +54,13 @@ public interface SysUserService extends BaseService<SysUser> {
     void add(SysUserWithRole user);
 
     /**
+     * 删除，并删除与该角色相关的权限信息
+     *
+     * @param id
+     */
+    void delete(Long id);
+
+    /**
      * 更新
      *
      * @param user

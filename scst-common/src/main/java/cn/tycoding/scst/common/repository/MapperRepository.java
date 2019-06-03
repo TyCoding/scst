@@ -9,6 +9,5 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @author tycoding
  * @date 2019-06-02
  */
-@org.apache.ibatis.annotations.Mapper
 public interface MapperRepository<T> extends Mapper<T>, MySqlMapper<T> {
 }

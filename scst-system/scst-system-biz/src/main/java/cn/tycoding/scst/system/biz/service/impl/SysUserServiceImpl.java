@@ -92,6 +92,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         saveUserRole(user);
     }
 
+    @Override
+    public void delete(Long id) {
+
+    }
+
     private void saveUserRole(SysUserWithRole user) {
         user.getRoleIds().forEach(roleId -> {
             SysUserRole userRole = new SysUserRole();

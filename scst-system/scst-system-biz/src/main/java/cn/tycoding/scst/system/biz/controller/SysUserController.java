@@ -88,39 +88,31 @@ public class SysUserController extends BaseController {
         return new Result<>(map);
     }
 
-    /**
-     * 根据用户名查询用户信息
-     *
-     * @param username
-     * @return
-     */
     @GetMapping("/info/{username}")
     @ApiOperation(value = "根据用户名查询用户信息")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String")
     public Result<SysUser> info(@PathVariable("username") String username) {
-        return new Result<SysUser>(sysUserService.findByName(username));
+        return new Result<>(sysUserService.findByName(username));
     }
 
-    /**
-     * 分页查询列表数据，条件查询
-     *
-     * @param user
-     * @return
-     */
     @PostMapping("/list")
     @ApiOperation(value = "分页、条件查询用户列表信息")
     @ApiImplicitParam(name = "user", value = "查询条件", required = true, dataType = "SysUser", paramType = "body")
     public Result<Map> list(SysUser user, QueryPage queryPage) {
-        return new Result<Map>(this.selectByPageNumSize(queryPage, () -> sysUserService.list(user)));
+        return new Result<>(this.selectByPageNumSize(queryPage, () -> sysUserService.list(user)));
     }
 
-
     /**
-     * 根据ID查询用户信息
+     * 根据用户名获取对应的权限列表
      *
-     * @param id
+     * @param username
      * @return
      */
+    @GetMapping("/getMenus/{username}")
+    public Result<List> getMenus(@PathVariable("username") String username) {
+        return new Result<>(sysUserService.getMenus(username));
+    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查询详细用户信息", notes = "id存在且大于0")
     @ApiImplicitParam(name = "id", value = "用户编号", required = true, dataType = "Long")
@@ -132,12 +124,6 @@ public class SysUserController extends BaseController {
         }
     }
 
-    /**
-     * 添加用户信息
-     *
-     * @param user
-     * @return
-     */
     @PostMapping
     @ApiOperation(value = "添加用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
@@ -146,12 +132,6 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
-    /**
-     * 删除用户信息
-     *
-     * @param id
-     * @return
-     */
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除用户")
     @ApiImplicitParam(name = "id", value = "用户编号", required = true, dataType = "Long")
@@ -160,12 +140,6 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
-    /**
-     * 更新用户信息
-     *
-     * @param user
-     * @return
-     */
     @PutMapping("/edit")
     @ApiOperation(value = "更新用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
@@ -174,12 +148,6 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
-    /**
-     * 修改密码
-     *
-     * @param password
-     * @return
-     */
     @PostMapping("/changePass")
     @ApiOperation(value = "修改密码")
     public Result changePass(String password) {

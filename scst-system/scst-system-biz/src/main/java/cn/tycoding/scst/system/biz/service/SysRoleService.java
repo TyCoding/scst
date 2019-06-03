@@ -2,6 +2,7 @@ package cn.tycoding.scst.system.biz.service;
 
 import cn.tycoding.scst.common.service.BaseService;
 import cn.tycoding.scst.system.api.entity.SysRole;
+import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
 
 import java.util.List;
 
@@ -18,4 +19,12 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @return
      */
     List<SysRole> findUserRoles(String username);
+
+    List<SysRole> list(SysRole role);
+
+    List<SysRoleWithMenu> findById(Long id);
+
+    void add(SysRoleWithMenu role);
+
+    void update(SysRoleWithMenu role);
 }
