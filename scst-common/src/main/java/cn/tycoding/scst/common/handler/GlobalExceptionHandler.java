@@ -1,0 +1,38 @@
+package cn.tycoding.scst.common.handler;
+
+import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.exception.GlobalException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 全局异常处理器
+ *
+ * @author tycoding
+ * @date 2019-06-04
+ */
+@Slf4j
+@RestControllerAdvice
+@Order(value = Ordered.HIGHEST_PRECEDENCE)
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result exception(Exception e) {
+        log.error("全局异常：>> {}", e.getMessage(), e);
+        return new Result(e);
+    }
+
+    @ExceptionHandler(value = GlobalException.class)
+    public Result globalException(GlobalException e, HttpServletResponse response) {
+        log.error("运行时异常：>> {}", e.getMsg(), e);
+        return new Result<>(response.getStatus(), e.getMsg());
+    }
+}

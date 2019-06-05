@@ -9,4 +9,10 @@ import cn.tycoding.scst.system.api.entity.SysDept;
  */
 public interface SysDeptMapper extends MapperRepository<SysDept> {
 
+    /**
+     * 改变部门表节点排序
+     *
+     * @param id
+     */
+    void changeTopNode(Long id);
 }

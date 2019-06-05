@@ -38,11 +38,6 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public void delete(Object key) {
-        mapper.deleteByPrimaryKey(key);
-    }
-
-    @Override
     public void batchDelete(List<Long> ids, String property, Class<T> clazz) {
         Example example = new Example(clazz);
         example.createCriteria().andIn(property, ids);

@@ -9,4 +9,11 @@
         left join sys_user_role ur on (ur.user_id = u.id)
         left join sys_role r on (ur.role_id = r.id)
     </select>
+
+    <select id="findById" resultType="cn.tycoding.scst.system.api.entity.SysRoleWithMenu">
+        select r.*, rm.menu_id menuId
+        from sys_role r
+        left join sys_role_menu rm on (rm.role_id = r.id)
+        where r.id = #{roleId}
+    </select>
 </mapper>

@@ -13,4 +13,16 @@
         where u.username = #{username}
     </select>
 
+    <update id="changeTopNode">
+        update sys_menu
+        set parent_id = 0
+        where id in (
+            select a.id from (
+                select id from sys_menu where parent_id in
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            ) a,
+        )
+    </update>
 </mapper>

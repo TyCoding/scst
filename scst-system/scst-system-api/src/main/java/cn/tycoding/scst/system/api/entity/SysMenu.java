@@ -20,8 +20,8 @@ import java.util.Date;
 @Table(name = "sys_menu")
 public class SysMenu implements Serializable {
 
-    private static final String TYPE_MENU = "menu";
-    private static final String TYPE_BUTTON = "button";
+    public static final String TYPE_MENU = "menu";
+    public static final String TYPE_BUTTON = "button";
 
     /**
      * 菜单ID

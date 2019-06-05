@@ -3,5 +3,19 @@
 
 <mapper namespace="cn.tycoding.scst.system.biz.mapper.SysDeptMapper">
 
+    <update id="changeTopNode">
+        update sys_dept
+        set parent_id = 0
+        where id in
+        (
+            select a.id from
+            (
+                select id from sys_dept where parent_id in
+              <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                  #{id}
+              </foreach>
+            ), a
+        )
+    </update>
 
 </mapper>

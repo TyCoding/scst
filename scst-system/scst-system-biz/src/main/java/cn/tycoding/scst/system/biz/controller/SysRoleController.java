@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +19,7 @@ import java.util.Map;
  * @date 2019-06-03
  */
 @RestController
-@RequestMapping
+@RequestMapping("/role")
 @Api(value = "SysRoleController", tags = {"角色管理接口"})
 public class SysRoleController extends BaseController {
 
@@ -37,7 +36,7 @@ public class SysRoleController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation(value = "查询详细角色信息", notes = "id存在且大于0")
     @ApiImplicitParam(name = "id", value = "角色ID", required = true, dataType = "Long")
-    public Result<List> findById(@PathVariable Long id) {
+    public Result<SysRoleWithMenu> findById(@PathVariable Long id) {
         if (id == null || id == 0) {
             return new Result<>();
         } else {

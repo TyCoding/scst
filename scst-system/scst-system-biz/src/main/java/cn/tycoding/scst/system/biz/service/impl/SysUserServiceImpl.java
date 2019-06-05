@@ -10,7 +10,9 @@ import cn.tycoding.scst.system.api.utils.TreeUtils;
 import cn.tycoding.scst.system.biz.mapper.SysMenuMapper;
 import cn.tycoding.scst.system.biz.mapper.SysUserMapper;
 import cn.tycoding.scst.system.biz.mapper.SysUserRoleMapper;
+import cn.tycoding.scst.system.biz.service.SysUserRoleService;
 import cn.tycoding.scst.system.biz.service.SysUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,10 +39,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+
     @Override
     public SysUser findByName(String username) {
         Example example = new Example(SysUser.class);
-        if (!username.isEmpty()) {
+        if (StringUtils.isNoneBlank(username)) {
             example.createCriteria().andCondition("username=", username);
         }
         List<SysUser> list = this.selectByExample(example);
@@ -93,8 +98,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-
+        sysUserMapper.deleteByPrimaryKey(id);
+        sysUserRoleService.deleteUserRolesByUserId(id);
     }
 
     private void saveUserRole(SysUserWithRole user) {
@@ -107,6 +114,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     }
 
     @Override
+    @Transactional
     public void update(SysUserWithRole user) {
         user.setPassword(null);
         user.setModifyTime(new Date());
@@ -120,6 +128,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     }
 
     @Override
+    @Transactional
     public void updatePassword(String password) {
 
     }

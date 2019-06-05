@@ -79,7 +79,7 @@ public class SysUserController extends BaseController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", user.getId());
-        map.put("username", user.getUsername());
+        map.put("name", user.getUsername());
         map.put("avatar", user.getAvatar());
         map.put("roles", roleSet);
         map.put("permission", menuSet);
@@ -98,7 +98,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/list")
     @ApiOperation(value = "分页、条件查询用户列表信息")
     @ApiImplicitParam(name = "user", value = "查询条件", required = true, dataType = "SysUser", paramType = "body")
-    public Result<Map> list(SysUser user, QueryPage queryPage) {
+    public Result<Map> list(@RequestBody SysUser user, QueryPage queryPage) {
         return new Result<>(this.selectByPageNumSize(queryPage, () -> sysUserService.list(user)));
     }
 
@@ -120,7 +120,7 @@ public class SysUserController extends BaseController {
         if (id == null || id == 0) {
             return new Result<>();
         } else {
-            return new Result<>(sysUserService.selectByKey(id));
+            return new Result<>(sysUserService.findById(id));
         }
     }
 

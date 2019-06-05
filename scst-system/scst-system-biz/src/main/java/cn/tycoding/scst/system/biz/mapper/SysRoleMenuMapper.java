@@ -8,4 +8,5 @@ import cn.tycoding.scst.system.api.entity.SysRoleMenu;
  * @date 2019-06-02
  */
 public interface SysRoleMenuMapper extends MapperRepository<SysRoleMenu> {
+
 }

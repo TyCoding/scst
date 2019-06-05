@@ -11,14 +11,17 @@
         <if test="username != null and username != ''">
             and username = #{username}
         </if>
-        <if test="sex != null">
-            and sex = #{sex}
+        <if test="deptId != null and deptId != 0">
+            and dept_id = #{deptId}
+        </if>
+        <if test="status != null">
+            and status = #{status}
         </if>
         order by u.id
     </select>
 
     <select id="findById" resultType="cn.tycoding.scst.system.api.entity.SysUserWithRole">
-        select u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status u.description, u.dept_id, ur.role_id role_id
+        select u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status, u.description, u.dept_id, ur.role_id role_id
         from sys_user u
         left join sys_user_role ur on (ur.user_id = u.id)
         where u.id = #{id}

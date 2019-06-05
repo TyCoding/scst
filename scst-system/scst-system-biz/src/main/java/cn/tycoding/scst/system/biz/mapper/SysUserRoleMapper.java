@@ -8,4 +8,5 @@ import cn.tycoding.scst.system.api.entity.SysUserRole;
  * @date 2019-06-02
  */
 public interface SysUserRoleMapper extends MapperRepository<SysUserRole> {
+
 }

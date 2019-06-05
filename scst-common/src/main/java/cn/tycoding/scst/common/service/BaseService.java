@@ -19,8 +19,6 @@ public interface BaseService<T> {
 
     void save(T entity);
 
-    void delete(Object key);
-
     void batchDelete(List<Long> ids, String property, Class<T> clazz);
 
     void updateAll(T entity);

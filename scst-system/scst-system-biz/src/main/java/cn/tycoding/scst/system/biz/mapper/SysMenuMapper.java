@@ -18,4 +18,11 @@ public interface SysMenuMapper extends MapperRepository<SysMenu> {
      * @return
      */
     List<SysMenu> findUserMenus(String username);
+
+    /**
+     * 改变父节点
+     *
+     * @param id
+     */
+    void changeTopNode(Long id);
 }
