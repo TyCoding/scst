@@ -93,6 +93,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Transactional
     public void add(SysUserWithRole user) {
         user.setCreateTime(new Date());
+        user.setModifyTime(new Date());
+        user.setSex("0");
+        //TODO
+        user.setSalt("xxxxx");
         this.save(user);
         saveUserRole(user);
     }
@@ -120,9 +124,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         user.setModifyTime(new Date());
         this.updateNotNull(user);
 
-        //删除与此用户关联的角色的关联信息
+        //删除与此用户关联的角色的关联信息，并建议建立用户角色新的关联
         Example example = new Example(SysUserRole.class);
-        example.createCriteria().andCondition("user_id", user.getId());
+        example.createCriteria().andCondition("user_id=", user.getId());
         sysUserRoleMapper.deleteByExample(example);
         saveUserRole(user);
     }
@@ -130,12 +134,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     @Transactional
     public void updatePassword(String password) {
-
+        //TODO
     }
 
     @Override
-    public boolean checkName(String name, Long id) {
-        return false;
+    public boolean checkName(String name, String id) {
+        if (StringUtils.isBlank(name)) {
+            return false;
+        }
+        Example example = new Example(SysUser.class);
+        if (StringUtils.isNotBlank(id)) {
+            example.createCriteria().andCondition("lower(username)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(username)=", name.toLowerCase());
+        }
+        return this.selectByExample(example).size() > 0 ? false : true;
     }
 
 

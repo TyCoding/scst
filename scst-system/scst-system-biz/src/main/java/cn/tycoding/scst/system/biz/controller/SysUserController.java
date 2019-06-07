@@ -10,6 +10,7 @@ import cn.tycoding.scst.system.biz.service.SysRoleService;
 import cn.tycoding.scst.system.biz.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -97,7 +98,10 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/list")
     @ApiOperation(value = "分页、条件查询用户列表信息")
-    @ApiImplicitParam(name = "user", value = "查询条件", required = true, dataType = "SysUser", paramType = "body")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "user", value = "查询条件", required = true, dataType = "SysUser", paramType = "body"),
+            @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
+    })
     public Result<Map> list(@RequestBody SysUser user, QueryPage queryPage) {
         return new Result<>(this.selectByPageNumSize(queryPage, () -> sysUserService.list(user)));
     }
@@ -140,7 +144,7 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
-    @PutMapping("/edit")
+    @PutMapping
     @ApiOperation(value = "更新用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
     public Result edit(@RequestBody SysUserWithRole user) {
@@ -153,6 +157,16 @@ public class SysUserController extends BaseController {
     public Result changePass(String password) {
         sysUserService.updatePassword(password);
         return new Result();
+    }
+
+    @GetMapping("/checkName/{name}/{id}")
+    @ApiOperation(value = "校验该名称是否已存在")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "String")
+    })
+    public Result<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+        return new Result<>(sysUserService.checkName(name, id));
     }
 
 }

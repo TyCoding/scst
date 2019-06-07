@@ -61,6 +61,9 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
             tree.setId(menu.getId());
             tree.setName(menu.getName());
             tree.setUrl(menu.getUrl());
+            tree.setIcon(menu.getIcon());
+            tree.setComponent(menu.getComponent());
+            tree.setCreateTime(menu.getCreateTime());
             tree.setParentId(menu.getParentId());
             treeList.add(tree);
         });
@@ -104,5 +107,19 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
             menu.setUrl(null);
         }
         this.updateNotNull(menu);
+    }
+
+    @Override
+    public boolean checkName(String name, String id) {
+        if (StringUtils.isBlank(name)) {
+            return false;
+        }
+        Example example = new Example(SysMenu.class);
+        if (StringUtils.isNotBlank(id)) {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+        }
+        return this.selectByExample(example).size() > 0 ? false : true;
     }
 }

@@ -56,4 +56,13 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @param id
      */
     void delete(Long id);
+
+    /**
+     * 校验当前名称是否存在
+     *
+     * @param name 名称
+     * @param id   ID，如果是修改操作，name就一定存在
+     * @return
+     */
+    boolean checkName(String name, String id);
 }

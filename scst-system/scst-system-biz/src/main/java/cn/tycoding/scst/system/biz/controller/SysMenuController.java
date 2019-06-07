@@ -7,6 +7,7 @@ import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.biz.service.SysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,10 @@ public class SysMenuController extends BaseController {
 
     @PostMapping("/list")
     @ApiOperation(value = "分页、条件查询权限列表信息")
-    @ApiImplicitParam(name = "menu", value = "查询条件", required = true, dataType = "SysMenu", paramType = "body")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "menu", value = "查询条件", required = true, dataType = "SysMenu", paramType = "body"),
+            @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
+    })
     public Result<Map> list(SysMenu menu, QueryPage queryPage) {
         return new Result<>(this.selectByPageNumSize(queryPage, () -> sysMenuService.list(menu)));
     }
@@ -66,11 +70,21 @@ public class SysMenuController extends BaseController {
         return new Result();
     }
 
-    @PutMapping("/edit")
+    @PutMapping
     @ApiOperation(value = "更新权限")
     @ApiImplicitParam(name = "menu", value = "权限实体信息", required = true, dataType = "SysMenu", paramType = "body")
     public Result edit(@RequestBody SysMenu menu) {
         sysMenuService.update(menu);
         return new Result();
+    }
+
+    @GetMapping("/checkName/{name}/{id}")
+    @ApiOperation(value = "校验该名称是否已存在")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "String")
+    })
+    public Result<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+        return new Result<>(sysMenuService.checkName(name, id));
     }
 }

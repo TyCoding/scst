@@ -75,11 +75,11 @@ public interface SysUserService extends BaseService<SysUser> {
     void updatePassword(String password);
 
     /**
-     * 校验当前用户名是否存在
+     * 校验当前名称是否存在
      *
-     * @param name
-     * @param id
+     * @param name 名称
+     * @param id   ID，如果是修改操作，name就一定存在
      * @return
      */
-    boolean checkName(String name, Long id);
+    boolean checkName(String name, String id);
 }

@@ -35,6 +35,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
             tree.setId(dept.getId());
             tree.setParentId(dept.getParentId());
             tree.setName(dept.getName());
+            tree.setCreateTime(dept.getCreateTime());
             treeList.add(tree);
         });
         return TreeUtils.build(treeList);
@@ -85,5 +86,19 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     @Transactional
     public void update(SysDept dept) {
         this.updateNotNull(dept);
+    }
+
+    @Override
+    public boolean checkName(String name, String id) {
+        if (StringUtils.isBlank(name)) {
+            return false;
+        }
+        Example example = new Example(SysDept.class);
+        if (StringUtils.isNotBlank(id)) {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+        }
+        return this.selectByExample(example).size() > 0 ? false : true;
     }
 }

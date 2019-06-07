@@ -93,7 +93,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public void update(SysRoleWithMenu role) {
         this.updateNotNull(role);
         Example example = new Example(SysRoleMenu.class);
-        example.createCriteria().andCondition("role_id", role.getId());
+        example.createCriteria().andCondition("role_id=", role.getId());
         sysRoleMenuMapper.deleteByExample(example);
         this.saveRoleMenu(role);
     }
@@ -104,5 +104,19 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         sysRoleMapper.deleteByPrimaryKey(id);
         sysRoleMenuService.deleteRoleMenusByRoleId(id);
         sysUserRoleService.deleteUserRolesByRoleId(id);
+    }
+
+    @Override
+    public boolean checkName(String name, String id) {
+        if (StringUtils.isBlank(name)) {
+            return false;
+        }
+        Example example = new Example(SysRole.class);
+        if (StringUtils.isNotBlank(id)) {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+        } else {
+            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+        }
+        return this.selectByExample(example).size() > 0 ? false : true;
     }
 }

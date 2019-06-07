@@ -16,7 +16,6 @@ public enum CommonEnums {
     USER_ERROR(500, "获取用户信息失败"),
     LOGOUT_ERROR(500, "退出失败"),
     SYSTEM_ERROR(500, "系统内部错误");
-
     private final int code;
     private final String msg;
 }

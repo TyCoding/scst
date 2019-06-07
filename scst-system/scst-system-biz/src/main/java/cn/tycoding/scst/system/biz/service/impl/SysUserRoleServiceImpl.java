@@ -23,7 +23,7 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRole> impleme
     @Transactional
     public void deleteUserRolesByRoleId(Long roleId) {
         Example example = new Example(SysUserRole.class);
-        example.createCriteria().andCondition("role_id", roleId);
+        example.createCriteria().andCondition("role_id=", roleId);
         sysUserRoleMapper.deleteByExample(example);
     }
 
@@ -31,7 +31,7 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRole> impleme
     @Transactional
     public void deleteUserRolesByUserId(Long userId) {
         Example example = new Example(SysUserRole.class);
-        example.createCriteria().andCondition("user_id", userId);
+        example.createCriteria().andCondition("user_id=", userId);
         sysUserRoleMapper.deleteByExample(example);
     }
 }
