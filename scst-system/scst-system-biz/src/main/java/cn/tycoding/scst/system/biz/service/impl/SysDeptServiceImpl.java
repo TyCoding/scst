@@ -54,7 +54,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
         try {
             Example example = new Example(SysDept.class);
             if (StringUtils.isNoneBlank(dept.getName())) {
-                example.createCriteria().andCondition("name=", dept.getName());
+                example.createCriteria().andLike("name", "%" + dept.getName() + "%");
             }
             example.setOrderByClause("create_time");
             return this.selectByExample(example);

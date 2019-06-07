@@ -48,8 +48,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public List<SysRole> list(SysRole role) {
         try {
             Example example = new Example(SysRole.class);
-            if (StringUtils.isNoneBlank(role.getName())) {
-                example.createCriteria().andCondition("name=", role.getName());
+            if (StringUtils.isNotBlank(role.getName())) {
+                example.createCriteria().andLike("name", "%" + role.getName() + "%");
             }
             example.setOrderByClause("create_time");
             return this.selectByExample(example);
@@ -80,12 +80,14 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     }
 
     private void saveRoleMenu(SysRoleWithMenu role) {
-        role.getMenuIds().forEach(menuId -> {
-            SysRoleMenu roleMenu = new SysRoleMenu();
-            roleMenu.setMenuId(menuId);
-            roleMenu.setRoleId(role.getId());
-            sysRoleMenuMapper.insert(roleMenu);
-        });
+        if (role.getMenuIds() != null && role.getMenuIds().get(0) != null) {
+            role.getMenuIds().forEach(menuId -> {
+                SysRoleMenu roleMenu = new SysRoleMenu();
+                roleMenu.setMenuId(menuId);
+                roleMenu.setRoleId(role.getId());
+                sysRoleMenuMapper.insert(roleMenu);
+            });
+        }
     }
 
     @Override

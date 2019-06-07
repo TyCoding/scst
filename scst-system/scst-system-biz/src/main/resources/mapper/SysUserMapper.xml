@@ -9,7 +9,7 @@
         left join sys_dept d on (u.dept_id = d.id)
         where 1=1
         <if test="username != null and username != ''">
-            and username = #{username}
+            and username like concat ('%', #{username}, '%')
         </if>
         <if test="deptId != null and deptId != 0">
             and dept_id = #{deptId}

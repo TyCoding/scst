@@ -39,7 +39,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     public List<SysMenu> list(SysMenu menu) {
         Example example = new Example(SysMenu.class);
         if (StringUtils.isNoneBlank(menu.getName())) {
-            example.createCriteria().andCondition("name=", menu.getName());
+            example.createCriteria().andLike("name", "%" + menu.getName() + "%");
         }
         if (StringUtils.isNoneBlank(menu.getType())) {
             example.createCriteria().andCondition("type=", menu.getType());

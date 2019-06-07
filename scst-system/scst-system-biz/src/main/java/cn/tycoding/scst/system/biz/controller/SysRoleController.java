@@ -33,7 +33,7 @@ public class SysRoleController extends BaseController {
             @ApiImplicitParam(name = "role", value = "查询条件", required = true, dataType = "SysRole", paramType = "body"),
             @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
     })
-    public Result<Map> list(SysRole role, QueryPage queryPage) {
+    public Result<Map> list(@RequestBody SysRole role, QueryPage queryPage) {
         return new Result<>(this.selectByPageNumSize(queryPage, () -> sysRoleService.list(role)));
     }
 
