@@ -1,4 +1,4 @@
-package cn.tycoding.scst.system.biz.controller;
+package cn.tycoding.scst.auth.controller;
 
 import cn.tycoding.scst.common.utils.Result;
 import cn.tycoding.scst.system.api.entity.SysUser;
