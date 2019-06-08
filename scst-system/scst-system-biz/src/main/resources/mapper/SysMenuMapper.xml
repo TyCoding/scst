@@ -18,11 +18,8 @@
         set parent_id = 0
         where id in (
             select a.id from (
-                select id from sys_menu where parent_id in
-                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
-                    #{id}
-                </foreach>
-            ) a,
+                select id from sys_menu where parent_id = #{id}
+            ) a
         )
     </update>
 </mapper>

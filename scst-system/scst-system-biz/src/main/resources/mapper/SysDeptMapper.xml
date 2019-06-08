@@ -10,11 +10,8 @@
         (
             select a.id from
             (
-                select id from sys_dept where parent_id in
-              <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
-                  #{id}
-              </foreach>
-            ), a
+                select id from sys_dept where parent_id = #{id}
+            ) a
         )
     </update>
 

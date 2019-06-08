@@ -46,6 +46,11 @@ public class Tree<T> {
     private String component;
 
     /**
+     * 权限标识
+     */
+    private String permission;
+
+    /**
      * 子节点
      */
     private List<Tree<T>> children = new ArrayList<>();

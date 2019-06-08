@@ -63,6 +63,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
             tree.setUrl(menu.getUrl());
             tree.setIcon(menu.getIcon());
             tree.setComponent(menu.getComponent());
+            tree.setPermission(menu.getPermission());
             tree.setCreateTime(menu.getCreateTime());
             tree.setParentId(menu.getParentId());
             treeList.add(tree);
@@ -85,13 +86,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
             menu.setUrl(null);
             menu.setIcon(null);
         }
-        this.updateNotNull(menu);
+        this.save(menu);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        sysMenuMapper.deleteByExample(id);
+        sysMenuMapper.deleteByPrimaryKey(id);
         sysRoleMenuService.deleteRoleMenusByMenuId(id);
         sysMenuMapper.changeTopNode(id);
     }
@@ -99,7 +100,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     @Override
     @Transactional
     public void update(SysMenu menu) {
-        if (menu.getParentId() != null) {
+        if (menu.getParentId() == null) {
             menu.setParentId(0L);
         }
         if (SysMenu.TYPE_BUTTON.equals(menu.getType())) {

@@ -33,7 +33,7 @@ public class SysMenuController extends BaseController {
             @ApiImplicitParam(name = "menu", value = "查询条件", required = true, dataType = "SysMenu", paramType = "body"),
             @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
     })
-    public Result<Map> list(SysMenu menu, QueryPage queryPage) {
+    public Result<Map> list(@RequestBody SysMenu menu, QueryPage queryPage) {
         return new Result<>(this.selectByPageNumSize(queryPage, () -> sysMenuService.list(menu)));
     }
 
