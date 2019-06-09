@@ -28,6 +28,7 @@
         <module>scst-admin</module>
         <module>scst-gateway</module>
         <module>scst-auth</module>
+        <module>scst-component</module>
     </modules>
 
     <dependencies>

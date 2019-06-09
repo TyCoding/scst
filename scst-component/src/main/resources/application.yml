@@ -1,0 +1,16 @@
+spring:
+  mail:
+    #邮件服务器地址
+    host: smtp.sina.com
+    #用户名
+    username: tycoding@sina.com
+    #密码
+    password: ty886.
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp.auth: true
+
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false

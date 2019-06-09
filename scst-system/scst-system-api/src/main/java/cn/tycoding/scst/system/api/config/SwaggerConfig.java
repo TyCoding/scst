@@ -38,8 +38,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Cloud Template微服务项目")
-                .description("文档地址：https://github.com/TyCoding/cloud-template")
+                .title("Spring Cloud Security Template分布式权限管理项目API文档")
+                .description("文档地址：https://github.com/TyCoding/scst")
                 .termsOfServiceUrl("http://tycoding.cn/")
                 .contact(new Contact("tycoding", "https://tycoding.cn", ""))
                 .version("v1.0")

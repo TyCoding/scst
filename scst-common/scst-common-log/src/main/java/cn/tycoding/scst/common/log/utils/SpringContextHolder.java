@@ -3,6 +3,7 @@ package cn.tycoding.scst.common.log.utils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
@@ -19,6 +20,22 @@ import org.springframework.stereotype.Service;
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
 
     private static ApplicationContext applicationContext = null;
+
+    /**
+     * 动态注入Bean
+     *
+     * @param name Bean名称
+     * @param obj  Bean对象
+     */
+    public static void registerBean(String name, Object obj) {
+
+        // 获取BeanFactory
+        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) applicationContext
+                .getAutowireCapableBeanFactory();
+
+        // 动态注册bean.
+        defaultListableBeanFactory.registerSingleton(name, obj);
+    }
 
     /**
      * 取得存储在静态变量中的ApplicationContext.
