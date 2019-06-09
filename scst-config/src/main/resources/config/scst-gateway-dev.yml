@@ -6,16 +6,4 @@ zuul:
     scst-system:
       path: /api/system/**
       serviceId: scst-system-biz
-    scst-logging:
-      path: /api/logging/**
-      serviceId: scst-logging
-#    sct-monitor:
-#      path: /api/monitor/**
-#      serviceId: sct-monitor
-#    sct-zipkin:
-#      path: /api/zipkin/**
-#      serviceId: sct-zipkin
-#    sct-eureka:
-#      path: /api/eureka/**
-#      serviceId: sct-eureka
 

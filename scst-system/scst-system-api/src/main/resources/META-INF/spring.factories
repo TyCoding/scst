@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.tycoding.scst.system.api.config.SwaggerConfig
+  cn.tycoding.scst.system.api.config.SwaggerConfig, \
+  cn.tycoding.scst.system.api.feign.fallback.RemoteLogServiceFallbackImpl

@@ -23,7 +23,7 @@
         <!-- 模块依赖 -->
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>scst-common</artifactId>
+            <artifactId>scst-common-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -48,6 +48,12 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
             <version>${swagger-models.version}</version>
+        </dependency>
+
+        <!-- 分布式HTTP客户端Feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!--&lt;!&ndash; Security安全 &ndash;&gt;

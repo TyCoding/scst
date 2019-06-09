@@ -3,7 +3,7 @@ package cn.tycoding.scst.system.biz.controller;
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
 import cn.tycoding.scst.common.utils.Result;
-import cn.tycoding.scst.logging.annotation.Log;
+import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.system.api.entity.*;
 import cn.tycoding.scst.system.biz.service.SysDeptService;
 import cn.tycoding.scst.system.biz.service.SysMenuService;

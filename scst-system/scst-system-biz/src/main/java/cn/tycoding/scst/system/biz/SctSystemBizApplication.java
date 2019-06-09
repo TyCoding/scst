@@ -2,6 +2,7 @@ package cn.tycoding.scst.system.biz;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -15,6 +16,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2019-06-02
  */
 @MapperScan("cn.tycoding.scst.system.biz.mapper")
+@EnableFeignClients
 @SpringBootApplication
 public class SctSystemBizApplication {
 

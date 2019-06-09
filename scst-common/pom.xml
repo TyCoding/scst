@@ -8,56 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>scst-common</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <properties>
-        <tk-mapper.version>4.1.5</tk-mapper.version>
-        <pagehelper.version>1.2.10</pagehelper.version>
-        <fastjson.version>1.2.58</fastjson.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
-        <commons-fileupload.version>1.4</commons-fileupload.version>
-    </properties>
-
-    <dependencies>
-        <!-- Web依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- Mybatis通用Mapper -->
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper</artifactId>
-            <version>${tk-mapper.version}</version>
-        </dependency>
-
-        <!-- Mybatis分页插件PageHelper -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>${pagehelper.version}</version>
-        </dependency>
-
-        <!-- FastJSON -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-
-        <!-- Commons-lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>${commons-fileupload.version}</version>
-        </dependency>
-
-    </dependencies>
-
+    <modules>
+        <module>scst-common-core</module>
+        <module>scst-common-log</module>
+    </modules>
 </project>
