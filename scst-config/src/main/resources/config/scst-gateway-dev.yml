@@ -1,11 +1,14 @@
 zuul:
   routes:
-    sct-auth:
+    scst-auth:
       path: /api/auth/**
-      serviceId: sct-auth
-    sct-admin:
-      path: /api/admin/**
-      serviceId: sct-admin-biz
+      serviceId: scst-auth
+    scst-system:
+      path: /api/system/**
+      serviceId: scst-system-biz
+    scst-logging:
+      path: /api/logging/**
+      serviceId: scst-logging
 #    sct-monitor:
 #      path: /api/monitor/**
 #      serviceId: sct-monitor

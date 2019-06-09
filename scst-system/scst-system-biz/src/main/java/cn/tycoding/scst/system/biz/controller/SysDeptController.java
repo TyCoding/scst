@@ -3,6 +3,7 @@ package cn.tycoding.scst.system.biz.controller;
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
 import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.logging.annotation.Log;
 import cn.tycoding.scst.system.api.entity.SysDept;
 import cn.tycoding.scst.system.biz.service.SysDeptService;
 import io.swagger.annotations.Api;
@@ -54,6 +55,7 @@ public class SysDeptController extends BaseController {
         }
     }
 
+    @Log("添加部门")
     @PostMapping
     @ApiOperation(value = "添加部门")
     @ApiImplicitParam(name = "dept", value = "部门实体信息", required = true, dataType = "SysDept", paramType = "body")
@@ -62,6 +64,7 @@ public class SysDeptController extends BaseController {
         return new Result();
     }
 
+    @Log("删除部门")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除部门")
     @ApiImplicitParam(name = "id", value = "部门ID", required = true, dataType = "Long")
@@ -70,6 +73,7 @@ public class SysDeptController extends BaseController {
         return new Result();
     }
 
+    @Log("更新部门")
     @PutMapping
     @ApiOperation(value = "更新部门")
     @ApiImplicitParam(name = "dept", value = "部门实体信息", required = true, dataType = "SysDept", paramType = "body")

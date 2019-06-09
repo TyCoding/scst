@@ -1,4 +1,4 @@
-package cn.tycoding.scst.common.utils;
+package cn.tycoding.scst.logging.utils;
 
 import org.apache.commons.io.FileUtils;
 import org.lionsoul.ip2region.DataBlock;
@@ -13,6 +13,9 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
 /**
+ * 根据IP查询详细的地址位置
+ * 试用开源的ip2region库，开源地址：https://github.com/lionsoul2014/ip2region
+ *
  * @author tycoding
  * @date 2019-06-08
  */

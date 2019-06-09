@@ -7,9 +7,8 @@
         <artifactId>scst</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sct-monitor</artifactId>
+    <artifactId>scst-admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>scst-admin</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -24,10 +23,10 @@
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <!--security-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        </dependency>-->
         <!--web 模块-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,7 +52,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.tycoding.api.auth.AuthApplication</mainClass>
+                    <mainClass>cn.tycoding.scst.admin.ScstAdminApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

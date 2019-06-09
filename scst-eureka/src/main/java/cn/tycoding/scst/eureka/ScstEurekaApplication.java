@@ -1,4 +1,4 @@
-package cn.tycoding.scst;
+package cn.tycoding.scst.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

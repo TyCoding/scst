@@ -24,22 +24,27 @@
         <module>scst-eureka</module>
         <module>scst-common</module>
         <module>scst-system</module>
+        <module>scst-logging</module>
+        <module>scst-config</module>
+        <module>scst-admin</module>
+        <module>scst-gateway</module>
+        <module>scst-auth</module>
     </modules>
 
     <dependencies>
         <!-- Eureka客户端 -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
 
-<!--        &lt;!&ndash;监控客户端&ndash;&gt;
+        <!--监控客户端-->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>${spring-boot-admin.version}</version>
         </dependency>
-        &lt;!&ndash;服务链路追踪&ndash;&gt;
+        <!--服务链路追踪-->
         <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>
@@ -48,11 +53,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
         </dependency>
-        &lt;!&ndash;断路器依赖&ndash;&gt;
+        <!--断路器依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>-->
+        </dependency>
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>

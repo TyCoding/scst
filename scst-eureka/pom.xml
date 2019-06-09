@@ -25,7 +25,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.tycoding.scst.eureka.EurekaApplication</mainClass>
+                    <mainClass>cn.tycoding.scst.eureka.ScstEurekaApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

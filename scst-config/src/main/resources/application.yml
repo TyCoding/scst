@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: sct-config
+    name: scst-config
   main:
     allow-bean-definition-overriding: true
 
@@ -20,4 +20,4 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://sct-eureka:8761/eureka/
+      defaultZone: http://scst-eureka:8761/eureka/

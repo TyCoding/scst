@@ -1,4 +1,4 @@
-package cn.tycoding.api.config;
+package cn.tycoding.scst.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +14,9 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @EnableConfigServer
 @EnableDiscoveryClient
 @SpringBootApplication
-public class ConfigApplication {
+public class ScstConfigApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConfigApplication.class, args);
+        SpringApplication.run(ScstConfigApplication.class, args);
     }
 }

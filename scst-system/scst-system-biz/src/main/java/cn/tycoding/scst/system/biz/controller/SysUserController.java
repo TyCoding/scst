@@ -3,6 +3,7 @@ package cn.tycoding.scst.system.biz.controller;
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
 import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.logging.annotation.Log;
 import cn.tycoding.scst.system.api.entity.*;
 import cn.tycoding.scst.system.biz.service.SysDeptService;
 import cn.tycoding.scst.system.biz.service.SysMenuService;
@@ -128,6 +129,7 @@ public class SysUserController extends BaseController {
         }
     }
 
+    @Log("添加用户")
     @PostMapping
     @ApiOperation(value = "添加用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
@@ -136,6 +138,7 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
+    @Log("删除用户")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除用户")
     @ApiImplicitParam(name = "id", value = "用户编号", required = true, dataType = "Long")
@@ -144,6 +147,7 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
+    @Log("更新用户")
     @PutMapping
     @ApiOperation(value = "更新用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
@@ -152,6 +156,7 @@ public class SysUserController extends BaseController {
         return new Result();
     }
 
+    @Log("修改密码")
     @PostMapping("/changePass")
     @ApiOperation(value = "修改密码")
     public Result changePass(String password) {

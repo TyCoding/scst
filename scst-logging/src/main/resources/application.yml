@@ -1,10 +1,24 @@
 server:
-  port: 9999
+  port: 5001
+
+spring:
+  application:
+    name: scst-logging
+
+  main:
+    allow-bean-definition-overriding: true
+
+  profiles:
+    active: dev
+  cloud:
+    config:
+      name: ${spring.application.name}
+      profile: ${spring.profiles.active}
 
 #mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
-  type-aliases-package: cn.tycoding.scst.system.api.entity
+  type-aliases-package: cn.tycoding.scst.logging.entity
   configuration:
     # 使用jdbc的getGeneratedKeys 可以获取数据库自增主键值
     use-generated-keys: true
@@ -22,4 +36,11 @@ pagehelper:
 # 打印sql
 logging:
   level:
-    cn.tycoding.scst.system.biz.mapper: DEBUG
+    cn.tycoding.scst.logging.mapper: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://scst-eureka:8761/eureka/

@@ -4,12 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tycoding</groupId>
-        <artifactId>sct-api</artifactId>
+        <artifactId>scst</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sct-gateway</artifactId>
+    <artifactId>scst-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sct-gateway</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -31,7 +30,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.tycoding.api.auth.AuthApplication</mainClass>
+                    <mainClass>cn.tycoding.scst.gateway.ScstGatewayApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

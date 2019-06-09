@@ -1,4 +1,4 @@
-package cn.tycoding.api.gateway.config;
+package cn.tycoding.scst.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
  * 处理跨域请求
  *
  * @author tycoding
- * @date 2019-05-23
+ * @date 2019-06-08
  */
 @Component
 @Configuration

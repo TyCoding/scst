@@ -3,6 +3,7 @@ package cn.tycoding.scst.system.biz.controller;
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
 import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.logging.annotation.Log;
 import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.biz.service.SysMenuService;
 import io.swagger.annotations.Api;
@@ -54,6 +55,7 @@ public class SysMenuController extends BaseController {
         }
     }
 
+    @Log("添加权限")
     @PostMapping
     @ApiOperation(value = "添加权限")
     @ApiImplicitParam(name = "menu", value = "菜单实体信息", required = true, dataType = "SysMenu", paramType = "body")
@@ -62,6 +64,7 @@ public class SysMenuController extends BaseController {
         return new Result();
     }
 
+    @Log("删除权限")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除权限")
     @ApiImplicitParam(name = "id", value = "权限ID", required = true, dataType = "Long")
@@ -70,6 +73,7 @@ public class SysMenuController extends BaseController {
         return new Result();
     }
 
+    @Log("更新权限")
     @PutMapping
     @ApiOperation(value = "更新权限")
     @ApiImplicitParam(name = "menu", value = "权限实体信息", required = true, dataType = "SysMenu", paramType = "body")

@@ -3,11 +3,11 @@ server:
 
 spring:
   application:
-    name: sct-eureka
+    name: scst-eureka
 
 eureka:
   instance:
-    hostname: sct-eureka
+    hostname: scst-eureka
     prefer-ip-address: true
   client:
     register-with-eureka: false

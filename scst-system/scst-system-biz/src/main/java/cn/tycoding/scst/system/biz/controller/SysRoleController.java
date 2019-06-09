@@ -3,6 +3,7 @@ package cn.tycoding.scst.system.biz.controller;
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
 import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.logging.annotation.Log;
 import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
 import cn.tycoding.scst.system.biz.service.SysRoleService;
@@ -48,6 +49,7 @@ public class SysRoleController extends BaseController {
         }
     }
 
+    @Log("添加角色")
     @PostMapping
     @ApiOperation(value = "添加角色")
     @ApiImplicitParam(name = "user", value = "角色实体信息", required = true, dataType = "SysRoleWithMenu", paramType = "body")
@@ -56,6 +58,7 @@ public class SysRoleController extends BaseController {
         return new Result();
     }
 
+    @Log("删除角色")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除角色")
     @ApiImplicitParam(name = "id", value = "角色ID", required = true, dataType = "Long")
@@ -64,6 +67,7 @@ public class SysRoleController extends BaseController {
         return new Result();
     }
 
+    @Log("更新角色")
     @PutMapping
     @ApiOperation(value = "更新角色")
     @ApiImplicitParam(name = "role", value = "角色实体信息", required = true, dataType = "SysRoleWithMenu", paramType = "body")
