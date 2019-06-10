@@ -2,8 +2,8 @@ package cn.tycoding.scst.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * 分布式配置中心  Config
@@ -12,7 +12,7 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  * @date 2019-06-08
  */
 @EnableConfigServer
-@EnableDiscoveryClient
+@EnableEurekaClient
 @SpringBootApplication
 public class ScstConfigApplication {
 

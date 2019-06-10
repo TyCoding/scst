@@ -18,6 +18,7 @@
         <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
         <zipkin.version>2.10.1</zipkin.version>
         <spring-boot-admin.version>2.1.5</spring-boot-admin.version>
+        <guava.version>20.0</guava.version>
     </properties>
 
     <modules>
@@ -63,6 +64,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <!-- 测试 -->

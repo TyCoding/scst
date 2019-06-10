@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jolokia:jolokia-core:1.6.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Documents/maven/repository/org/jolokia/jolokia-core/1.6.1/jolokia-core-1.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/Documents/maven/repository/org/jolokia/jolokia-core/1.6.1/jolokia-core-1.6.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Documents/maven/repository/org/jolokia/jolokia-core/1.6.1/jolokia-core-1.6.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

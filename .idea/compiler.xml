@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="scst-common-log" />
+        <module name="scst-system-biz" />
+        <module name="scst-admin" />
+        <module name="scst-gateway" />
+        <module name="scst-eureka" />
+        <module name="scst-auth" />
+        <module name="scst-component" />
+        <module name="scst-config" />
+        <module name="scst-system-api" />
+        <module name="scst-common-core" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8">
+      <module name="scst" target="1.8" />
+      <module name="scst-admin" target="1.8" />
+      <module name="scst-auth" target="1.8" />
+      <module name="scst-common" target="1.8" />
+      <module name="scst-common-core" target="1.8" />
+      <module name="scst-common-log" target="1.8" />
+      <module name="scst-component" target="1.8" />
+      <module name="scst-config" target="1.8" />
+      <module name="scst-eureka" target="1.8" />
+      <module name="scst-gateway" target="1.8" />
+      <module name="scst-system" target="1.8" />
+      <module name="scst-system-api" target="1.8" />
+      <module name="scst-system-biz" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="scst-admin" options="-parameters" />
+      <module name="scst-auth" options="-parameters" />
+      <module name="scst-common-core" options="-parameters" />
+      <module name="scst-common-log" options="-parameters" />
+      <module name="scst-component" options="-parameters" />
+      <module name="scst-config" options="-parameters" />
+      <module name="scst-eureka" options="-parameters" />
+      <module name="scst-gateway" options="-parameters" />
+      <module name="scst-system-api" options="-parameters" />
+      <module name="scst-system-biz" options="-parameters" />
+    </option>
+  </component>
+</project>

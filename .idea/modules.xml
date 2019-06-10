@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/scst.iml" filepath="$PROJECT_DIR$/scst.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-admin/scst-admin.iml" filepath="$PROJECT_DIR$/scst-admin/scst-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-auth/scst-auth.iml" filepath="$PROJECT_DIR$/scst-auth/scst-auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-common/scst-common.iml" filepath="$PROJECT_DIR$/scst-common/scst-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-common/scst-common-core/scst-common-core.iml" filepath="$PROJECT_DIR$/scst-common/scst-common-core/scst-common-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-common/scst-common-log/scst-common-log.iml" filepath="$PROJECT_DIR$/scst-common/scst-common-log/scst-common-log.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-component/scst-component.iml" filepath="$PROJECT_DIR$/scst-component/scst-component.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-config/scst-config.iml" filepath="$PROJECT_DIR$/scst-config/scst-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-eureka/scst-eureka.iml" filepath="$PROJECT_DIR$/scst-eureka/scst-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-gateway/scst-gateway.iml" filepath="$PROJECT_DIR$/scst-gateway/scst-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-system/scst-system.iml" filepath="$PROJECT_DIR$/scst-system/scst-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-system/scst-system-api/scst-system-api.iml" filepath="$PROJECT_DIR$/scst-system/scst-system-api/scst-system-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scst-system/scst-system-biz/scst-system-biz.iml" filepath="$PROJECT_DIR$/scst-system/scst-system-biz/scst-system-biz.iml" />
+    </modules>
+  </component>
+</project>
