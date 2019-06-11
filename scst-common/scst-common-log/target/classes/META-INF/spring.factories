@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.tycoding.scst.common.log.LogAutoConfig, \
-  cn.tycoding.scst.common.log.utils.SpringContextHolder
