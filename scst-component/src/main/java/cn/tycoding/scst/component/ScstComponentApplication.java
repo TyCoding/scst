@@ -2,7 +2,6 @@ package cn.tycoding.scst.component;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Component 组件模块，已实现了如下组件服务
@@ -14,7 +13,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @author tycoding
  * @date 2019-06-09
  */
-@EnableEurekaClient
+//@EnableEurekaClient
 @SpringBootApplication
 public class ScstComponentApplication {
 
