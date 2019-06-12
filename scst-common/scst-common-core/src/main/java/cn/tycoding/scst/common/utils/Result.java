@@ -53,4 +53,10 @@ public class Result<T> implements Serializable {
         this.code = CommonConstants.ERROR;
         this.msg = e.getMessage();
     }
+
+    public Result(String message, Throwable e) {
+        super();
+        this.msg = message;
+        this.code = CommonConstants.ERROR;
+    }
 }

@@ -15,4 +15,9 @@ public interface CommonConstants {
      * 错误标记
      */
     Integer ERROR = 500;
+
+    /**
+     * 在线聊天模块会话消息KEY值
+     */
+    String CHAT_MESSAGE_KEY = "CHAT_MESSAGE_KEY";
 }

@@ -14,6 +14,7 @@
     <properties>
         <spring-boot-mybatis.version>2.0.1</spring-boot-mybatis.version>
         <hikaricp.version>3.3.1</hikaricp.version>
+        <qiniu.version>7.2.22</qiniu.version>
     </properties>
 
     <dependencies>
@@ -34,6 +35,19 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- Spring-Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- 七牛云 SDK -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>${qiniu.version}</version>
         </dependency>
 
         <!-- HikariCP连接池 -->
