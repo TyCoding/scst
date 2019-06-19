@@ -1,7 +1,7 @@
 package cn.tycoding.scst.system.api.feign;
 
 import cn.tycoding.scst.common.constant.ServiceNameConstants;
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import cn.tycoding.scst.system.api.feign.fallback.RemoteLogServiceFallbackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,5 +19,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface RemoteLogService {
 
     @PostMapping("/log")
-    Result saveLog(@RequestBody SysLog sysLog);
+    R saveLog(@RequestBody SysLog sysLog);
 }

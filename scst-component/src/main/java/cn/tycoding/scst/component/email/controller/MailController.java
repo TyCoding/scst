@@ -1,7 +1,7 @@
 package cn.tycoding.scst.component.email.controller;
 
 import cn.tycoding.scst.common.log.annotation.Log;
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.component.email.entity.MailProperties;
 import cn.tycoding.scst.component.email.service.MailService;
 import io.swagger.annotations.Api;
@@ -29,13 +29,13 @@ public class MailController {
     @PostMapping
     @ApiOperation(value = "发送邮件")
     @ApiImplicitParam(name = "mailProperties", value = "邮件参数", required = true, dataType = "MailProperties", paramType = "body")
-    public Result add(@RequestBody MailProperties mailProperties) {
+    public R add(@RequestBody MailProperties mailProperties) {
         try {
             mailService.send(mailProperties);
-            return new Result();
+            return new R();
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(e);
+            return new R(e);
         }
     }
 }

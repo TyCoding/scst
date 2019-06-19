@@ -2,7 +2,7 @@ package cn.tycoding.scst.system.biz.controller;
 
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
@@ -34,18 +34,18 @@ public class SysRoleController extends BaseController {
             @ApiImplicitParam(name = "role", value = "查询条件", required = true, dataType = "SysRole", paramType = "body"),
             @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
     })
-    public Result<Map> list(@RequestBody SysRole role, QueryPage queryPage) {
-        return new Result<>(this.selectByPageNumSize(queryPage, () -> sysRoleService.list(role)));
+    public R<Map> list(@RequestBody SysRole role, QueryPage queryPage) {
+        return new R<>(this.selectByPageNumSize(queryPage, () -> sysRoleService.list(role)));
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查询详细角色信息", notes = "id存在且大于0")
     @ApiImplicitParam(name = "id", value = "角色ID", required = true, dataType = "Long")
-    public Result<SysRoleWithMenu> findById(@PathVariable Long id) {
+    public R<SysRoleWithMenu> findById(@PathVariable Long id) {
         if (id == null || id == 0) {
-            return new Result<>();
+            return new R<>();
         } else {
-            return new Result<>(sysRoleService.findById(id));
+            return new R<>(sysRoleService.findById(id));
         }
     }
 
@@ -53,27 +53,27 @@ public class SysRoleController extends BaseController {
     @PostMapping
     @ApiOperation(value = "添加角色")
     @ApiImplicitParam(name = "user", value = "角色实体信息", required = true, dataType = "SysRoleWithMenu", paramType = "body")
-    public Result add(@RequestBody SysRoleWithMenu role) {
+    public R add(@RequestBody SysRoleWithMenu role) {
         sysRoleService.add(role);
-        return new Result();
+        return new R();
     }
 
     @Log("删除角色")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除角色")
     @ApiImplicitParam(name = "id", value = "角色ID", required = true, dataType = "Long")
-    public Result delete(@PathVariable Long id) {
+    public R delete(@PathVariable Long id) {
         sysRoleService.delete(id);
-        return new Result();
+        return new R();
     }
 
     @Log("更新角色")
     @PutMapping
     @ApiOperation(value = "更新角色")
     @ApiImplicitParam(name = "role", value = "角色实体信息", required = true, dataType = "SysRoleWithMenu", paramType = "body")
-    public Result edit(@RequestBody SysRoleWithMenu role) {
+    public R edit(@RequestBody SysRoleWithMenu role) {
         sysRoleService.update(role);
-        return new Result();
+        return new R();
     }
 
     @GetMapping("/checkName/{name}/{id}")
@@ -82,7 +82,7 @@ public class SysRoleController extends BaseController {
             @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String"),
             @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "String")
     })
-    public Result<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
-        return new Result<>(sysRoleService.checkName(name, id));
+    public R<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+        return new R<>(sysRoleService.checkName(name, id));
     }
 }

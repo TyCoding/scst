@@ -2,7 +2,7 @@ package cn.tycoding.scst.system.biz.controller;
 
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.biz.service.SysMenuService;
@@ -34,24 +34,24 @@ public class SysMenuController extends BaseController {
             @ApiImplicitParam(name = "menu", value = "查询条件", required = true, dataType = "SysMenu", paramType = "body"),
             @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
     })
-    public Result<Map> list(@RequestBody SysMenu menu, QueryPage queryPage) {
-        return new Result<>(this.selectByPageNumSize(queryPage, () -> sysMenuService.list(menu)));
+    public R<Map> list(@RequestBody SysMenu menu, QueryPage queryPage) {
+        return new R<>(this.selectByPageNumSize(queryPage, () -> sysMenuService.list(menu)));
     }
 
     @GetMapping("/tree")
     @ApiOperation(value = "获取菜单权限Tree树")
-    public Result<List> tree() {
-        return new Result<>(sysMenuService.tree());
+    public R<List> tree() {
+        return new R<>(sysMenuService.tree());
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据ID查询权限信息", notes = "id存在且大于0")
     @ApiImplicitParam(name = "id", value = "权限ID", required = true, dataType = "Long")
-    public Result<SysMenu> findById(@PathVariable Long id) {
+    public R<SysMenu> findById(@PathVariable Long id) {
         if (id == null || id == 0) {
-            return new Result<>();
+            return new R<>();
         } else {
-            return new Result<>(sysMenuService.findById(id));
+            return new R<>(sysMenuService.findById(id));
         }
     }
 
@@ -59,27 +59,27 @@ public class SysMenuController extends BaseController {
     @PostMapping
     @ApiOperation(value = "添加权限")
     @ApiImplicitParam(name = "menu", value = "菜单实体信息", required = true, dataType = "SysMenu", paramType = "body")
-    public Result add(@RequestBody SysMenu menu) {
+    public R add(@RequestBody SysMenu menu) {
         sysMenuService.add(menu);
-        return new Result();
+        return new R();
     }
 
     @Log("删除权限")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除权限")
     @ApiImplicitParam(name = "id", value = "权限ID", required = true, dataType = "Long")
-    public Result delete(@PathVariable Long id) {
+    public R delete(@PathVariable Long id) {
         sysMenuService.delete(id);
-        return new Result();
+        return new R();
     }
 
     @Log("更新权限")
     @PutMapping
     @ApiOperation(value = "更新权限")
     @ApiImplicitParam(name = "menu", value = "权限实体信息", required = true, dataType = "SysMenu", paramType = "body")
-    public Result edit(@RequestBody SysMenu menu) {
+    public R edit(@RequestBody SysMenu menu) {
         sysMenuService.update(menu);
-        return new Result();
+        return new R();
     }
 
     @GetMapping("/checkName/{name}/{id}")
@@ -88,7 +88,7 @@ public class SysMenuController extends BaseController {
             @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String"),
             @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "String")
     })
-    public Result<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
-        return new Result<>(sysMenuService.checkName(name, id));
+    public R<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+        return new R<>(sysMenuService.checkName(name, id));
     }
 }

@@ -1,6 +1,6 @@
 package cn.tycoding.scst.common.handler;
 
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.common.exception.GlobalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -25,14 +25,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result exception(Exception e) {
+    public R exception(Exception e) {
         log.error("全局异常：>> {}", e.getMessage(), e);
-        return new Result(e);
+        return new R(e);
     }
 
     @ExceptionHandler(value = GlobalException.class)
-    public Result globalException(GlobalException e, HttpServletResponse response) {
+    public R globalException(GlobalException e, HttpServletResponse response) {
         log.error("运行时异常：>> {}", e.getMsg(), e);
-        return new Result<>(response.getStatus(), e.getMsg());
+        return new R<>(response.getStatus(), e.getMsg());
     }
 }

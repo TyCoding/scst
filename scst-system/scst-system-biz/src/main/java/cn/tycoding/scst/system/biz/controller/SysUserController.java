@@ -2,7 +2,7 @@ package cn.tycoding.scst.system.biz.controller;
 
 import cn.tycoding.scst.common.controller.BaseController;
 import cn.tycoding.scst.common.utils.QueryPage;
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.system.api.entity.*;
 import cn.tycoding.scst.system.biz.service.SysDeptService;
@@ -52,13 +52,13 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/info")
     @ApiOperation(value = "获取当前授权用户信息", notes = "必须经过了OAuth授权")
-    public Result<Map> info() {
+    public R<Map> info() {
 //        String username = SecurityUtils.getUsername();
 //        SysUser user = sysUserService.findByName(username);
 //        if (user == null) {
-//            return new Result<>(CommonEnums.USER_ERROR);
+//            return new R<>(CommonEnums.USER_ERROR);
 //        }
-//        return new Result<>(user);
+//        return new R<>(user);
 
         SysUser user = SysUser.builder()
                 .id(1L)
@@ -87,14 +87,14 @@ public class SysUserController extends BaseController {
         map.put("permission", menuSet);
         map.put("dept", dept);
         map.put("description", user.getDescription());
-        return new Result<>(map);
+        return new R<>(map);
     }
 
     @GetMapping("/info/{username}")
     @ApiOperation(value = "根据用户名查询用户信息")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String")
-    public Result<SysUser> info(@PathVariable("username") String username) {
-        return new Result<>(sysUserService.findByName(username));
+    public R<SysUser> info(@PathVariable("username") String username) {
+        return new R<>(sysUserService.findByName(username));
     }
 
     @PostMapping("/list")
@@ -103,8 +103,8 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "user", value = "查询条件", required = true, dataType = "SysUser", paramType = "body"),
             @ApiImplicitParam(name = "queryPage", value = "分页条件", required = true, dataType = "QueryPage", paramType = "body")
     })
-    public Result<Map> list(@RequestBody SysUser user, QueryPage queryPage) {
-        return new Result<>(this.selectByPageNumSize(queryPage, () -> sysUserService.list(user)));
+    public R<Map> list(@RequestBody SysUser user, QueryPage queryPage) {
+        return new R<>(this.selectByPageNumSize(queryPage, () -> sysUserService.list(user)));
     }
 
     /**
@@ -114,18 +114,18 @@ public class SysUserController extends BaseController {
      * @return
      */
     @GetMapping("/getMenus/{username}")
-    public Result<List> getMenus(@PathVariable("username") String username) {
-        return new Result<>(sysUserService.getMenus(username));
+    public R<List> getMenus(@PathVariable("username") String username) {
+        return new R<>(sysUserService.getMenus(username));
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查询详细用户信息", notes = "id存在且大于0")
     @ApiImplicitParam(name = "id", value = "用户编号", required = true, dataType = "Long")
-    public Result<SysUser> findById(@PathVariable Long id) {
+    public R<SysUser> findById(@PathVariable Long id) {
         if (id == null || id == 0) {
-            return new Result<>();
+            return new R<>();
         } else {
-            return new Result<>(sysUserService.findById(id));
+            return new R<>(sysUserService.findById(id));
         }
     }
 
@@ -133,35 +133,35 @@ public class SysUserController extends BaseController {
     @PostMapping
     @ApiOperation(value = "添加用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
-    public Result add(@RequestBody SysUserWithRole user) {
+    public R add(@RequestBody SysUserWithRole user) {
         sysUserService.add(user);
-        return new Result();
+        return new R();
     }
 
     @Log("删除用户")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除用户")
     @ApiImplicitParam(name = "id", value = "用户编号", required = true, dataType = "Long")
-    public Result delete(@PathVariable Long id) {
+    public R delete(@PathVariable Long id) {
         sysUserService.delete(id);
-        return new Result();
+        return new R();
     }
 
     @Log("更新用户")
     @PutMapping
     @ApiOperation(value = "更新用户")
     @ApiImplicitParam(name = "user", value = "用户实体信息", required = true, dataType = "SysUserWithRole", paramType = "body")
-    public Result edit(@RequestBody SysUserWithRole user) {
+    public R edit(@RequestBody SysUserWithRole user) {
         sysUserService.update(user);
-        return new Result();
+        return new R();
     }
 
     @Log("修改密码")
     @PostMapping("/changePass")
     @ApiOperation(value = "修改密码")
-    public Result changePass(String password) {
+    public R changePass(String password) {
         sysUserService.updatePassword(password);
-        return new Result();
+        return new R();
     }
 
     @GetMapping("/checkName/{name}/{id}")
@@ -170,8 +170,8 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String"),
             @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "String")
     })
-    public Result<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
-        return new Result<>(sysUserService.checkName(name, id));
+    public R<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+        return new R<>(sysUserService.checkName(name, id));
     }
 
 }

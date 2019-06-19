@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Builder
 @ToString
 @AllArgsConstructor
-public class Result<T> implements Serializable {
+public class R<T> implements Serializable {
 
     @Getter
     @Setter
@@ -27,34 +27,34 @@ public class Result<T> implements Serializable {
     @Setter
     private T data;
 
-    public Result() {
+    public R() {
         super();
     }
 
-    public Result(T data) {
+    public R(T data) {
         super();
         this.data = data;
     }
 
-    public Result(T data, String msg) {
+    public R(T data, String msg) {
         super();
         this.data = data;
         this.msg = msg;
     }
 
-    public Result(CommonEnums enums) {
+    public R(CommonEnums enums) {
         super();
         this.code = enums.getCode();
         this.msg = enums.getMsg();
     }
 
-    public Result(Throwable e) {
+    public R(Throwable e) {
         super();
         this.code = CommonConstants.ERROR;
         this.msg = e.getMessage();
     }
 
-    public Result(String message, Throwable e) {
+    public R(String message, Throwable e) {
         super();
         this.msg = message;
         this.code = CommonConstants.ERROR;

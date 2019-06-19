@@ -1,6 +1,6 @@
 package cn.tycoding.scst.auth.controller;
 
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.system.api.entity.SysUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +18,14 @@ import java.util.Map;
 public class LoginController {
 
     @PostMapping("/oauth/token")
-    public Result login(@RequestBody SysUser user) {
+    public R login(@RequestBody SysUser user) {
         Map<String, Object> map = new HashMap<>();
         map.put("token", user.getUsername());
-        return new Result(map);
+        return new R(map);
     }
 
     @GetMapping("/user/logout")
-    public Result logout() {
-        return new Result();
+    public R logout() {
+        return new R();
     }
 }

@@ -2,7 +2,7 @@ package cn.tycoding.scst.component.qiniu.controller;
 
 import cn.tycoding.scst.common.exception.GlobalException;
 import cn.tycoding.scst.common.log.annotation.Log;
-import cn.tycoding.scst.common.utils.Result;
+import cn.tycoding.scst.common.utils.R;
 import cn.tycoding.scst.component.qiniu.entity.Storage;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -69,8 +69,8 @@ public class QiniuController {
      */
     @ApiOperation(value = "获取外链地址")
     @GetMapping(value = "/domain")
-    public Result domain() {
-        return new Result(URL);
+    public R domain() {
+        return new R(URL);
     }
 
     /**
@@ -80,7 +80,7 @@ public class QiniuController {
      */
     @ApiOperation(value = "获取七牛云对象实例文件列表")
     @GetMapping(value = "/list")
-    public Result<Map> list() {
+    public R<Map> list() {
         try {
             //构造一个带指定Zone对象的配置类
             Configuration cfg = new Configuration(Zone.zone0());
@@ -107,7 +107,7 @@ public class QiniuController {
             Map map = new HashMap();
             map.put("total", list.size());
             map.put("rows", list);
-            return new Result<>(map);
+            return new R<>(map);
         } catch (Exception e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -128,7 +128,7 @@ public class QiniuController {
     @Log("七牛云文件上传")
     @ApiOperation("文件上传接口")
     @RequestMapping("/upload")
-    public Result<Map> upload(@RequestParam("file") MultipartFile file) {
+    public R<Map> upload(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
 
             //上传文件路径
@@ -173,7 +173,7 @@ public class QiniuController {
                 if (localFile.exists()) {
                     localFile.delete(); //删除本地缓存的文件
                 }
-                return new Result<>(map);
+                return new R<>(map);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());
@@ -237,14 +237,14 @@ public class QiniuController {
     @ApiOperation(value = "文件删除")
     @ApiImplicitParam(name = "key", value = "文件Key", required = true, dataType = "String")
     @DeleteMapping("/{key}")
-    public Result delete(@PathVariable("key") String key) {
+    public R delete(@PathVariable("key") String key) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             bucketManager.delete(BUCKET_NAME, key);
-            return new Result();
+            return new R();
         } catch (QiniuException e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -265,14 +265,14 @@ public class QiniuController {
             @ApiImplicitParam(name = "newname", value = "新文件名称", required = true, dataType = "String")
     })
     @PutMapping
-    public Result update(@RequestParam("oldname") String oldname, @RequestParam("newname") String newname) {
+    public R update(@RequestParam("oldname") String oldname, @RequestParam("newname") String newname) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             bucketManager.move(BUCKET_NAME, oldname, BUCKET_NAME, newname);
-            return new Result();
+            return new R();
         } catch (QiniuException e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -288,7 +288,7 @@ public class QiniuController {
     @ApiOperation("根据文件名查询文件信息")
     @ApiImplicitParam(name = "name", value = "文件名称", required = true, dataType = "String")
     @GetMapping("/{name}")
-    public Result<List> find(@PathVariable("name") String name) {
+    public R<List> find(@PathVariable("name") String name) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
@@ -298,7 +298,7 @@ public class QiniuController {
             Storage storage = new Storage(fileInfo.hash, name, fileInfo.mimeType, fileInfo.fsize, URL + name);
             List<Storage> list = new ArrayList<>();
             list.add(storage);
-            return new Result<>(list);
+            return new R<>(list);
         } catch (QiniuException e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
