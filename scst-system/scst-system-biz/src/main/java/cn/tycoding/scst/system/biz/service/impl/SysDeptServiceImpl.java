@@ -1,16 +1,19 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
-import cn.tycoding.scst.common.service.impl.BaseServiceImpl;
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.Tree;
 import cn.tycoding.scst.system.api.entity.SysDept;
 import cn.tycoding.scst.system.api.utils.TreeUtils;
 import cn.tycoding.scst.system.biz.mapper.SysDeptMapper;
 import cn.tycoding.scst.system.biz.service.SysDeptService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,47 +24,33 @@ import java.util.List;
  * @date 2019-06-02
  */
 @Service
-public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysDeptService {
+public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
     @Autowired
     private SysDeptMapper sysDeptMapper;
 
     @Override
     public List<Tree<SysDept>> tree() {
-        List<SysDept> deptList = list(new SysDept());
+        List<SysDept> deptList = sysDeptMapper.selectList(new LambdaQueryWrapper<>());
         List<Tree<SysDept>> treeList = new ArrayList<>();
         deptList.forEach(dept -> {
             Tree<SysDept> tree = new Tree<>();
             tree.setId(dept.getId());
             tree.setParentId(dept.getParentId());
             tree.setName(dept.getName());
-            tree.setCreateTime(dept.getCreateTime());
             treeList.add(tree);
         });
         return TreeUtils.build(treeList);
     }
 
-    @Override
-    public SysDept findById(Long id) {
-        Example example = new Example(SysDept.class);
-        example.createCriteria().andCondition("id=", id);
-        List<SysDept> list = this.selectByExample(example);
-        return list.isEmpty() ? null : list.get(0);
-    }
 
     @Override
-    public List<SysDept> list(SysDept dept) {
-        try {
-            Example example = new Example(SysDept.class);
-            if (StringUtils.isNoneBlank(dept.getName())) {
-                example.createCriteria().andLike("name", "%" + dept.getName() + "%");
-            }
-            example.setOrderByClause("create_time");
-            return this.selectByExample(example);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    public IPage<SysDept> list(SysDept dept, QueryPage queryPage) {
+        IPage<SysDept> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc(SysDept::getCreateTime);
+        queryWrapper.like(StringUtils.isNotBlank(dept.getName()), SysDept::getName, dept.getName());
+        return sysDeptMapper.selectPage(page, queryWrapper);
     }
 
     @Override
@@ -78,14 +67,14 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     @Override
     @Transactional
     public void delete(Long id) {
-        sysDeptMapper.deleteByPrimaryKey(id);
+        sysDeptMapper.deleteById(id);
         sysDeptMapper.changeTopNode(id);
     }
 
     @Override
     @Transactional
     public void update(SysDept dept) {
-        this.updateNotNull(dept);
+        this.updateById(dept);
     }
 
     @Override
@@ -93,12 +82,13 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
         if (StringUtils.isBlank(name)) {
             return false;
         }
-        Example example = new Example(SysDept.class);
+        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(id)) {
-            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+            queryWrapper.eq(SysDept::getName, name);
+            queryWrapper.ne(SysDept::getId, id);
         } else {
-            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+            queryWrapper.eq(SysDept::getName, name);
         }
-        return this.selectByExample(example).size() > 0 ? false : true;
+        return sysDeptMapper.selectList(queryWrapper).size() <= 0;
     }
 }

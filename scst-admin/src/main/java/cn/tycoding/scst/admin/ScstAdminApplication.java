@@ -19,4 +19,6 @@ public class ScstAdminApplication {
     public static void main(String[] args) {
         SpringApplication.run(ScstAdminApplication.class, args);
     }
+
+
 }

@@ -20,8 +20,14 @@
         <!-- 模块依赖 -->
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>scst-system-api</artifactId>
+            <artifactId>scst-common-security</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- HikariCP连接池 -->
@@ -54,12 +60,6 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>${spring-boot-mybatis.version}</version>
-        </dependency>
-
-        <!-- Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- 配置中心客户端 -->

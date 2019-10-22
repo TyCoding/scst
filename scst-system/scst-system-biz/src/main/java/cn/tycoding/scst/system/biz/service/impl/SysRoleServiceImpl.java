@@ -1,6 +1,6 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
-import cn.tycoding.scst.common.service.impl.BaseServiceImpl;
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysRoleMenu;
 import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
@@ -9,13 +9,15 @@ import cn.tycoding.scst.system.biz.mapper.SysRoleMenuMapper;
 import cn.tycoding.scst.system.biz.service.SysRoleMenuService;
 import cn.tycoding.scst.system.biz.service.SysRoleService;
 import cn.tycoding.scst.system.biz.service.SysUserRoleService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
  * @date 2019-06-02
  */
 @Service
-public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
@@ -45,18 +47,12 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     }
 
     @Override
-    public List<SysRole> list(SysRole role) {
-        try {
-            Example example = new Example(SysRole.class);
-            if (StringUtils.isNotBlank(role.getName())) {
-                example.createCriteria().andLike("name", "%" + role.getName() + "%");
-            }
-            example.setOrderByClause("create_time");
-            return this.selectByExample(example);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    public IPage<SysRole> list(SysRole role, QueryPage queryPage) {
+        IPage<SysRole> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(role.getName()), SysRole::getName, role.getName());
+        queryWrapper.orderByDesc(SysRole::getCreateTime);
+        return sysRoleMapper.selectPage(page, queryWrapper);
     }
 
     @Override
@@ -93,17 +89,15 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     @Override
     @Transactional
     public void update(SysRoleWithMenu role) {
-        this.updateNotNull(role);
-        Example example = new Example(SysRoleMenu.class);
-        example.createCriteria().andCondition("role_id=", role.getId());
-        sysRoleMenuMapper.deleteByExample(example);
+        this.updateById(role);
+        sysRoleMenuService.deleteRoleMenusByRoleId(role.getId());
         this.saveRoleMenu(role);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        sysRoleMapper.deleteByPrimaryKey(id);
+        sysRoleMapper.deleteById(id);
         sysRoleMenuService.deleteRoleMenusByRoleId(id);
         sysUserRoleService.deleteUserRolesByRoleId(id);
     }
@@ -113,12 +107,13 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         if (StringUtils.isBlank(name)) {
             return false;
         }
-        Example example = new Example(SysRole.class);
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(id)) {
-            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+            queryWrapper.eq(SysRole::getName, name);
+            queryWrapper.ne(SysRole::getId, id);
         } else {
-            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+            queryWrapper.eq(SysRole::getName, name);
         }
-        return this.selectByExample(example).size() > 0 ? false : true;
+        return sysRoleMapper.selectList(queryWrapper).size() <= 0;
     }
 }

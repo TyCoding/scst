@@ -1,7 +1,7 @@
 package cn.tycoding.scst.system.api.feign;
 
-import cn.tycoding.scst.common.constant.ServiceNameConstants;
-import cn.tycoding.scst.common.utils.R;
+import cn.tycoding.scst.common.core.constant.ServiceNameConstants;
+import cn.tycoding.scst.common.core.utils.R;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import cn.tycoding.scst.system.api.feign.fallback.RemoteLogServiceFallbackImpl;
 import org.springframework.cloud.openfeign.FeignClient;

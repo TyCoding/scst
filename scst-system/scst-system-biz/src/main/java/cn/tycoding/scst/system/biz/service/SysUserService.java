@@ -1,10 +1,13 @@
 package cn.tycoding.scst.system.biz.service;
 
-import cn.tycoding.scst.common.service.BaseService;
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.Tree;
+import cn.tycoding.scst.system.api.dto.UserInfo;
 import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.api.entity.SysUser;
 import cn.tycoding.scst.system.api.entity.SysUserWithRole;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -12,7 +15,15 @@ import java.util.List;
  * @author tycoding
  * @date 2019-06-02
  */
-public interface SysUserService extends BaseService<SysUser> {
+public interface SysUserService extends IService<SysUser> {
+
+    /**
+     * 获取用户基本信息、角色信息、权限信息
+     *
+     * @param user
+     * @return
+     */
+    UserInfo getUserInfo(SysUser user);
 
     /**
      * 根据用户名查询
@@ -44,7 +55,7 @@ public interface SysUserService extends BaseService<SysUser> {
      * @param user
      * @return
      */
-    List<SysUser> list(SysUser user);
+    IPage<SysUser> list(SysUser user, QueryPage queryPage);
 
     /**
      * 新增

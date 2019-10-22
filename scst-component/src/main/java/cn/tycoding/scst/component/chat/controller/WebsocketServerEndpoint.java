@@ -1,8 +1,8 @@
 package cn.tycoding.scst.component.chat.controller;
 
-import cn.tycoding.scst.common.exception.GlobalException;
-import cn.tycoding.scst.common.utils.R;
-import cn.tycoding.scst.common.utils.StringUtil;
+import cn.tycoding.scst.common.core.exception.GlobalException;
+import cn.tycoding.scst.common.core.utils.R;
+import cn.tycoding.scst.common.core.utils.StringUtil;
 import cn.tycoding.scst.component.chat.entity.Message;
 import cn.tycoding.scst.component.chat.entity.User;
 import cn.tycoding.scst.component.chat.service.ChatSessionService;

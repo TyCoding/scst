@@ -1,5 +1,6 @@
 package cn.tycoding.scst.component;
 
+import cn.tycoding.scst.common.security.annotation.EnableScstResourceServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -14,6 +15,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @author tycoding
  * @date 2019-06-09
  */
+@EnableScstResourceServer
 @EnableEurekaClient
 @SpringBootApplication
 public class ScstComponentApplication {

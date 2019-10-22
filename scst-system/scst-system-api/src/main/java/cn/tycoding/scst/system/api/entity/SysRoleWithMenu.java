@@ -1,8 +1,8 @@
 package cn.tycoding.scst.system.api.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
-import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -15,12 +15,12 @@ public class SysRoleWithMenu extends SysRole {
     /**
      * 菜单ID
      */
-    @Transient
+    @TableField(exist = false)
     private Long menuId;
 
     /**
      * 菜单ID集合
      */
-    @Transient
+    @TableField(exist = false)
     private List<Long> menuIds;
 }

@@ -1,11 +1,9 @@
 package cn.tycoding.scst.system.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,6 +11,7 @@ import java.util.List;
  * @date 2019-06-03
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Tree<T> {
 
     /**
@@ -31,34 +30,32 @@ public class Tree<T> {
     private String name;
 
     /**
-     * 节点URL
+     * 路由地址
      */
-    private String url;
+    private String path;
 
     /**
-     * 图标
-     */
-    private String icon;
-
-    /**
-     * Vue组件地址
+     * 组件地址
      */
     private String component;
 
     /**
+     * icon
+     */
+    private String icon;
+
+    /**
+     * 节点类型
+     */
+    private String type;
+
+    /**
      * 权限标识
      */
-    private String permission;
+    private String perms;
 
     /**
      * 子节点
      */
     private List<Tree<T>> children = new ArrayList<>();
-
-    /**
-     * 创建时间
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
 }

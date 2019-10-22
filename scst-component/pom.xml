@@ -21,6 +21,11 @@
         <!-- 模块依赖 -->
         <dependency>
             <groupId>cn.tycoding</groupId>
+            <artifactId>scst-common-security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
             <artifactId>scst-common-log</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

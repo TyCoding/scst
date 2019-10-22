@@ -4,13 +4,20 @@
 <mapper namespace="cn.tycoding.scst.system.biz.mapper.SysMenuMapper">
 
     <select id="findUserMenus" resultType="cn.tycoding.scst.system.api.entity.SysMenu">
-        select m.*
-        from sys_role r
-        left join sys_user_role ur on (r.id = ur.role_id)
-        left join sys_user u on (u.id = ur.user_id)
-        left join sys_role_menu rm on (r.id = rm.role_id)
-        left join sys_menu m on (m.id = rm.menu_id)
-        where u.username = #{username}
+        SELECT DISTINCT
+            m.*
+        FROM
+            sys_role r,
+            sys_user_role ur,
+            sys_user u,
+            sys_role_menu rm,
+            sys_menu m
+        WHERE
+            r.id = ur.role_id
+            AND ur.user_id = u.id
+            AND r.id = rm.role_id
+            AND m.id = rm.menu_id
+            AND u.username = #{username}
     </select>
 
     <update id="changeTopNode">

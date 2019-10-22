@@ -1,8 +1,10 @@
 package cn.tycoding.scst.system.biz.service;
 
-import cn.tycoding.scst.common.service.BaseService;
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.Tree;
 import cn.tycoding.scst.system.api.entity.SysDept;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * @author tycoding
  * @date 2019-06-02
  */
-public interface SysDeptService extends BaseService<SysDept> {
+public interface SysDeptService extends IService<SysDept> {
 
     /**
      * 查询部门Tree树
@@ -20,18 +22,10 @@ public interface SysDeptService extends BaseService<SysDept> {
     List<Tree<SysDept>> tree();
 
     /**
-     * 根据部门ID获取部门数据
-     *
-     * @param id
-     * @return
-     */
-    SysDept findById(Long id);
-
-    /**
      * @param dept
      * @return
      */
-    List<SysDept> list(SysDept dept);
+    IPage<SysDept> list(SysDept dept, QueryPage queryPage);
 
     /**
      * 添加部门

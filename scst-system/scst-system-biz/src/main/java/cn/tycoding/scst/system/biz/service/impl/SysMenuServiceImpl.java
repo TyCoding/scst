@@ -1,20 +1,24 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
-import cn.tycoding.scst.common.service.impl.BaseServiceImpl;
+import cn.tycoding.scst.common.core.utils.QueryPage;
+import cn.tycoding.scst.system.api.dto.MenuMeta;
+import cn.tycoding.scst.system.api.dto.MenuTree;
 import cn.tycoding.scst.system.api.dto.Tree;
 import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.api.utils.TreeUtils;
 import cn.tycoding.scst.system.biz.mapper.SysMenuMapper;
 import cn.tycoding.scst.system.biz.service.SysMenuService;
 import cn.tycoding.scst.system.biz.service.SysRoleMenuService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +26,7 @@ import java.util.List;
  * @date 2019-06-02
  */
 @Service
-public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
 
     @Autowired
     private SysMenuMapper sysMenuMapper;
@@ -36,54 +40,90 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     }
 
     @Override
-    public List<SysMenu> list(SysMenu menu) {
-        Example example = new Example(SysMenu.class);
-        if (StringUtils.isNoneBlank(menu.getName())) {
-            example.createCriteria().andLike("name", "%" + menu.getName() + "%");
-        }
-        if (StringUtils.isNoneBlank(menu.getType())) {
-            example.createCriteria().andCondition("type=", menu.getType());
-        }
-        example.setOrderByClause("id");
-        return this.selectByExample(example);
+    public IPage<SysMenu> list(SysMenu menu, QueryPage queryPage) {
+        IPage<SysMenu> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(menu.getName()), SysMenu::getName, menu.getName());
+        queryWrapper.like(StringUtils.isNotBlank(menu.getType()), SysMenu::getType, menu.getType());
+        return sysMenuMapper.selectPage(page, queryWrapper);
     }
 
     @Override
     public List<Tree<SysMenu>> tree() {
         List<Tree<SysMenu>> treeList = new ArrayList<>();
-        buildMenuTree(treeList, list(new SysMenu()));
+        List<SysMenu> menuList = sysMenuMapper.selectList(new LambdaQueryWrapper<>());
+        if (menuList.size() > 0) {
+            menuList.forEach(menu -> {
+                Tree<SysMenu> tree = new Tree<>();
+                tree.setId(menu.getId());
+                tree.setName(menu.getName());
+                tree.setPath(menu.getPath());
+                tree.setIcon(menu.getIcon());
+                tree.setType(menu.getType());
+                tree.setPerms(menu.getPerms());
+                tree.setComponent(menu.getComponent());
+                tree.setParentId(menu.getParentId());
+                treeList.add(tree);
+            });
+        }
         return TreeUtils.build(treeList);
     }
 
-    private void buildMenuTree(List<Tree<SysMenu>> treeList, List<SysMenu> menus) {
-        menus.forEach(menu -> {
-            Tree<SysMenu> tree = new Tree<>();
-            tree.setId(menu.getId());
-            tree.setName(menu.getName());
-            tree.setUrl(menu.getUrl());
-            tree.setIcon(menu.getIcon());
-            tree.setComponent(menu.getComponent());
-            tree.setPermission(menu.getPermission());
-            tree.setCreateTime(menu.getCreateTime());
-            tree.setParentId(menu.getParentId());
-            treeList.add(tree);
-        });
+    @Override
+    public List<MenuTree<SysMenu>> build() {
+        List<MenuTree<SysMenu>> treeList = new ArrayList<>();
+        List<SysMenu> menuList = sysMenuMapper.selectList(new LambdaQueryWrapper<>());
+        if (menuList.size() > 0) {
+            menuList.forEach(menu -> {
+                if (menu.getType().equals(SysMenu.TYPE_MENU)) {
+                    MenuTree<SysMenu> tree = new MenuTree<>();
+                    tree.setId(menu.getId());
+                    tree.setName(menu.getName());
+                    tree.setPath(menu.getPath());
+                    tree.setMeta(new MenuMeta(menu.getName(), menu.getIcon()));
+                    tree.setComponent(menu.getComponent());
+                    tree.setHidden(menu.getHidden());
+                    tree.setParentId(menu.getParentId());
+                    treeList.add(tree);
+                }
+            });
+        }
+        return this.build(treeList);
     }
 
-    @Override
-    public SysMenu findById(Long id) {
-        return this.selectByKey(id);
+    private List<MenuTree<SysMenu>> build(List<MenuTree<SysMenu>> nodes) {
+        if (nodes == null) {
+            return null;
+        }
+        List<MenuTree<SysMenu>> tree = new ArrayList<>();
+        nodes.forEach(node -> {
+            Long pid = node.getParentId();
+            if (pid == null || pid.equals(0L)) {
+                node.setComponent("Layout");
+                node.setAlwaysShow(true);
+                tree.add(node);
+                return;
+            }
+            for (MenuTree<SysMenu> c : nodes) {
+                Long id = c.getId();
+                if (id != null && id.equals(pid)) {
+                    c.getChildren().add(node);
+                    return;
+                }
+            }
+        });
+        return tree;
     }
 
     @Override
     @Transactional
     public void add(SysMenu menu) {
-        menu.setCreateTime(new Date());
         if (menu.getParentId() == null) {
             menu.setParentId(0L);
         }
+        // TODO
         if (SysMenu.TYPE_BUTTON.equals(menu.getType())) {
-            menu.setUrl(null);
+            menu.setPath(null);
             menu.setIcon(null);
         }
         this.save(menu);
@@ -92,7 +132,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     @Override
     @Transactional
     public void delete(Long id) {
-        sysMenuMapper.deleteByPrimaryKey(id);
+        sysMenuMapper.deleteById(id);
         sysRoleMenuService.deleteRoleMenusByMenuId(id);
         sysMenuMapper.changeTopNode(id);
     }
@@ -103,11 +143,11 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
         if (menu.getParentId() == null) {
             menu.setParentId(0L);
         }
+        // TODO
         if (SysMenu.TYPE_BUTTON.equals(menu.getType())) {
             menu.setIcon(null);
-            menu.setUrl(null);
         }
-        this.updateNotNull(menu);
+        this.updateById(menu);
     }
 
     @Override
@@ -115,12 +155,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
         if (StringUtils.isBlank(name)) {
             return false;
         }
-        Example example = new Example(SysMenu.class);
+        LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(id)) {
-            example.createCriteria().andCondition("lower(name)=", name.toLowerCase()).andNotEqualTo("id", id);
+            queryWrapper.eq(SysMenu::getName, name);
+            queryWrapper.ne(SysMenu::getId, id);
         } else {
-            example.createCriteria().andCondition("lower(name)=", name.toLowerCase());
+            queryWrapper.eq(SysMenu::getName, name);
         }
-        return this.selectByExample(example).size() > 0 ? false : true;
+        return sysMenuMapper.selectList(queryWrapper).size() <= 0;
     }
 }

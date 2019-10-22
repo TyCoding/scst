@@ -1,8 +1,8 @@
 package cn.tycoding.scst.system.api.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
-import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -15,12 +15,12 @@ public class SysUserWithRole extends SysUser {
     /**
      * 角色ID
      */
-    @Transient
+    @TableField(exist = false)
     private Long roleId;
 
     /**
      * 角色ID集合
      */
-    @Transient
+    @TableField(exist = false)
     private List<Long> roleIds;
 }

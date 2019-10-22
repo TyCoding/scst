@@ -1,13 +1,13 @@
 package cn.tycoding.scst.system.api.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,13 +16,13 @@ import java.util.Date;
  * @date 2019-06-08
  */
 @Data
-@Table(name = "sys_log")
+@TableName(value = "sys_log")
 public class SysLog implements Serializable {
 
     /**
      * 主键
      */
-    @Id
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -65,12 +65,12 @@ public class SysLog implements Serializable {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(name = "create_time")
+    @TableField(value = "create_time")
     private Date createTime;
 
     /**
      * 用于搜索条件
      */
-    @Transient
+    @TableField(exist = false)
     private String timeField;
 }

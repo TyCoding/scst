@@ -1,13 +1,13 @@
 package cn.tycoding.scst.system.biz.mapper;
 
-import cn.tycoding.scst.common.repository.MapperRepository;
 import cn.tycoding.scst.system.api.entity.SysDept;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @author tycoding
  * @date 2019-06-02
  */
-public interface SysDeptMapper extends MapperRepository<SysDept> {
+public interface SysDeptMapper extends BaseMapper<SysDept> {
 
     /**
      * 改变部门表节点排序

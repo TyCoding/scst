@@ -1,13 +1,13 @@
 package cn.tycoding.scst.system.biz.service;
 
-import cn.tycoding.scst.common.service.BaseService;
 import cn.tycoding.scst.system.api.entity.SysUserRole;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author tycoding
  * @date 2019-06-02
  */
-public interface SysUserRoleService extends BaseService<SysUserRole> {
+public interface SysUserRoleService extends IService<SysUserRole> {
 
     /**
      * 根据角色ID删除该用户的角色关联信息

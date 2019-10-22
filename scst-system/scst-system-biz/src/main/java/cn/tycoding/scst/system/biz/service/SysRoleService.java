@@ -1,8 +1,10 @@
 package cn.tycoding.scst.system.biz.service;
 
-import cn.tycoding.scst.common.service.BaseService;
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * @author tycoding
  * @date 2019-06-02
  */
-public interface SysRoleService extends BaseService<SysRole> {
+public interface SysRoleService extends IService<SysRole> {
 
     /**
      * 根据用户名查询用户的角色信息
@@ -26,7 +28,7 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @param role
      * @return
      */
-    List<SysRole> list(SysRole role);
+    IPage<SysRole> list(SysRole role, QueryPage queryPage);
 
     /**
      * 根据用户名查询器角色和权限信息

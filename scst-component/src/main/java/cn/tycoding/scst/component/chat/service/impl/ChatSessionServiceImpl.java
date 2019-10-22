@@ -1,6 +1,6 @@
 package cn.tycoding.scst.component.chat.service.impl;
 
-import cn.tycoding.scst.common.utils.StringUtil;
+import cn.tycoding.scst.common.core.utils.StringUtil;
 import cn.tycoding.scst.component.chat.constant.ChatConstant;
 import cn.tycoding.scst.component.chat.entity.Message;
 import cn.tycoding.scst.component.chat.entity.User;

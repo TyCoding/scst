@@ -1,7 +1,7 @@
 package cn.tycoding.scst.component.email.controller;
 
 import cn.tycoding.scst.common.log.annotation.Log;
-import cn.tycoding.scst.common.utils.R;
+import cn.tycoding.scst.common.core.utils.R;
 import cn.tycoding.scst.component.email.entity.MailProperties;
 import cn.tycoding.scst.component.email.service.MailService;
 import io.swagger.annotations.Api;

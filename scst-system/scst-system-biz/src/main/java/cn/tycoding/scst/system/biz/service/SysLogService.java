@@ -1,14 +1,15 @@
 package cn.tycoding.scst.system.biz.service;
 
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysLog;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author tycoding
  * @date 2019-06-08
  */
-public interface SysLogService {
+public interface SysLogService extends IService<SysLog> {
 
     /**
      * 分页、条件查询日志列表
@@ -16,7 +17,7 @@ public interface SysLogService {
      * @param log
      * @return
      */
-    List<SysLog> list(SysLog log);
+    IPage<SysLog> list(SysLog log, QueryPage queryPage);
 
     /**
      * 根据ID删除日志记录

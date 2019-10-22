@@ -4,26 +4,24 @@
 <mapper namespace="cn.tycoding.scst.system.biz.mapper.SysUserMapper">
 
     <select id="list" resultType="cn.tycoding.scst.system.api.entity.SysUser">
-        select u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status, d.name dept_name
-        from sys_user u
-        left join sys_dept d on (u.dept_id = d.id)
-        where 1=1
-        <if test="username != null and username != ''">
-            and username like concat ('%', #{username}, '%')
+        select distinct u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status, d.name dept_name
+        from sys_user u, sys_dept d
+        where u.dept_id = d.id
+        <if test="user.username != null and user.username != ''">
+            and username like concat ('%', #{user.username}, '%')
         </if>
-        <if test="deptId != null and deptId != 0">
-            and dept_id = #{deptId}
+        <if test="user.deptId != null and user.deptId != 0">
+            and dept_id = #{user.deptId}
         </if>
-        <if test="status != null">
-            and status = #{status}
+        <if test="user.status != null">
+            and status = #{user.status}
         </if>
         order by u.id
     </select>
 
     <select id="findById" resultType="cn.tycoding.scst.system.api.entity.SysUserWithRole">
-        select u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status, u.description, u.dept_id, ur.role_id role_id
-        from sys_user u
-        left join sys_user_role ur on (ur.user_id = u.id)
-        where u.id = #{id}
+        select distinct u.id, u.username, u.create_time, u.avatar, u.phone, u.sex, u.status, u.description, u.dept_id, ur.role_id role_id
+        from sys_user u, sys_user_role ur
+        where ur.user_id = u.id and u.id = #{id}
     </select>
 </mapper>

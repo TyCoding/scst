@@ -1,26 +1,27 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
-import cn.tycoding.scst.common.service.impl.BaseServiceImpl;
+import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.Tree;
-import cn.tycoding.scst.system.api.entity.SysMenu;
-import cn.tycoding.scst.system.api.entity.SysUser;
-import cn.tycoding.scst.system.api.entity.SysUserRole;
-import cn.tycoding.scst.system.api.entity.SysUserWithRole;
+import cn.tycoding.scst.system.api.dto.UserInfo;
+import cn.tycoding.scst.system.api.entity.*;
 import cn.tycoding.scst.system.api.utils.TreeUtils;
 import cn.tycoding.scst.system.biz.mapper.SysMenuMapper;
 import cn.tycoding.scst.system.biz.mapper.SysUserMapper;
 import cn.tycoding.scst.system.biz.mapper.SysUserRoleMapper;
-import cn.tycoding.scst.system.biz.service.SysUserRoleService;
-import cn.tycoding.scst.system.biz.service.SysUserService;
+import cn.tycoding.scst.system.biz.service.*;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * @date 2019-06-02
  */
 @Service
-public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
@@ -42,13 +43,45 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Autowired
     private SysUserRoleService sysUserRoleService;
 
+    @Autowired
+    private SysRoleService sysRoleService;
+
+    @Autowired
+    private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysDeptService sysDeptService;
+
+    @Override
+    public UserInfo getUserInfo(SysUser user) {
+        UserInfo userInfo = new UserInfo();
+
+        //获取用户角色列表
+        List<SysRole> roleList = sysRoleService.findUserRoles(user.getUsername());
+        Set<String> roleSet = roleList.stream().map(SysRole::getName).collect(Collectors.toSet());
+
+        //获取用户权限列表
+        List<SysMenu> menuList = sysMenuService.findUserPermissions(user.getUsername());
+        Set<String> menuSet = menuList
+                .stream()
+                .filter(perm -> (perm.getPerms() != null && !perm.getPerms().equals("")))
+                .map(SysMenu::getPerms)
+                .collect(Collectors.toSet());
+
+        //获取用户部门列表
+//        SysDept dept = sysDeptService.findById(user.getDeptId());
+
+        userInfo.setSysUser(user);
+        userInfo.setRoles(roleSet);
+        userInfo.setPermissions(menuSet);
+        return userInfo;
+    }
+
     @Override
     public SysUser findByName(String username) {
-        Example example = new Example(SysUser.class);
-        if (StringUtils.isNoneBlank(username)) {
-            example.createCriteria().andCondition("username=", username);
-        }
-        List<SysUser> list = this.selectByExample(example);
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUsername, username);
+        List<SysUser> list = sysUserMapper.selectList(queryWrapper);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -68,25 +101,25 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     public List<Tree<SysMenu>> getMenus(String username) {
         List<SysMenu> menus = sysMenuMapper.findUserMenus(username);
         List<Tree<SysMenu>> treeList = new ArrayList<>();
-        menus.forEach(sysMenu -> {
+        menus.forEach(menu -> {
             Tree<SysMenu> tree = new Tree<>();
-            tree.setId(sysMenu.getId());
-            tree.setParentId(sysMenu.getParentId());
-            tree.setName(sysMenu.getName());
-            tree.setIcon(sysMenu.getIcon());
+            tree.setId(menu.getId());
+            tree.setName(menu.getName());
+            tree.setPath(menu.getPath());
+            tree.setIcon(menu.getIcon());
+            tree.setType(menu.getType());
+            tree.setPerms(menu.getPerms());
+            tree.setComponent(menu.getComponent());
+            tree.setParentId(menu.getParentId());
             treeList.add(tree);
         });
         return TreeUtils.build(treeList);
     }
 
     @Override
-    public List<SysUser> list(SysUser user) {
-        try {
-            return sysUserMapper.list(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    public IPage<SysUser> list(SysUser user, QueryPage queryPage) {
+        Page<SysUser> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        return sysUserMapper.list(page, user);
     }
 
     @Override
@@ -104,7 +137,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     @Transactional
     public void delete(Long id) {
-        sysUserMapper.deleteByPrimaryKey(id);
+        sysUserMapper.deleteById(id);
         sysUserRoleService.deleteUserRolesByUserId(id);
     }
 
@@ -122,12 +155,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     public void update(SysUserWithRole user) {
         user.setPassword(null);
         user.setModifyTime(new Date());
-        this.updateNotNull(user);
+        this.updateById(user);
 
         //删除与此用户关联的角色的关联信息，并建议建立用户角色新的关联
-        Example example = new Example(SysUserRole.class);
-        example.createCriteria().andCondition("user_id=", user.getId());
-        sysUserRoleMapper.deleteByExample(example);
+        sysUserRoleService.deleteUserRolesByUserId(user.getId());
         saveUserRole(user);
     }
 
@@ -142,13 +173,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         if (StringUtils.isBlank(name)) {
             return false;
         }
-        Example example = new Example(SysUser.class);
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(id)) {
-            example.createCriteria().andCondition("lower(username)=", name.toLowerCase()).andNotEqualTo("id", id);
+            queryWrapper.eq(SysUser::getUsername, name);
+            queryWrapper.ne(SysUser::getId, id);
         } else {
-            example.createCriteria().andCondition("lower(username)=", name.toLowerCase());
+            queryWrapper.eq(SysUser::getUsername, name);
         }
-        return this.selectByExample(example).size() > 0 ? false : true;
+        return sysUserMapper.selectList(queryWrapper).size() <= 0;
     }
 
 

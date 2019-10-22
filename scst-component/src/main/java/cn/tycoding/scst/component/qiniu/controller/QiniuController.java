@@ -1,9 +1,11 @@
 package cn.tycoding.scst.component.qiniu.controller;
 
-import cn.tycoding.scst.common.exception.GlobalException;
-import cn.tycoding.scst.common.log.annotation.Log;
-import cn.tycoding.scst.common.utils.R;
-import cn.tycoding.scst.component.qiniu.entity.Storage;
+import cn.tycoding.scst.common.core.constant.enums.CommonEnums;
+import cn.tycoding.scst.common.core.exception.GlobalException;
+import cn.tycoding.scst.common.core.utils.R;
+import cn.tycoding.scst.common.security.properties.QiniuProperties;
+import cn.tycoding.scst.common.security.properties.ScstProperties;
+import cn.tycoding.scst.component.qiniu.entity.QiniuInfo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -13,11 +15,9 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,45 +32,41 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
+ * 对七牛云对象储存的操作接口
+ * 关于七牛云开放的Java-API文档请看：https://developer.qiniu.com/kodo/sdk/1662/java-sdk-6
+ * 文件上传的DEMO请看 /test/java/cn/tycoding/UploadDemo.java 测试类。
+ * 请先到七牛云个人控制中心查看Access key 和 Secret Key
+ *
  * @author tycoding
- * @date 2019-06-12
+ * @date 2019/10/21
  */
 @Slf4j
 @RestController
-@Api(value = "QiniuController", tags = {"七牛云服务接口"})
 @RequestMapping("/qiniu")
+@Api(value = "QiniuController", tags = {"七牛云服务接口"})
 public class QiniuController {
 
-    //设置好账号的ACCESS_KEY和SECRET_KEY
-    @Value("${qiniu.access_key}")
-    private String ACCESS_KEY;
+    @Autowired
+    private ScstProperties properties;
 
-    @Value("${qiniu.secret_key}")
-    private String SECRET_KEY;
-
-    //要上传的空间
-    @Value("${qiniu.bucket_name}")
-    private String BUCKET_NAME;
-
-    //个人七牛云对象储存外链域名地址
-    @Value("${qiniu.url}")
-    private String URL;
+    private void check(QiniuProperties qiniu) {
+        if (StringUtils.isBlank(qiniu.getAk()) || StringUtils.isBlank(qiniu.getSk()) || StringUtils.isBlank(qiniu.getBn()) || StringUtils.isBlank(qiniu.getUrl())) {
+            throw new GlobalException("请先完善七牛云服务配置，再进行操作");
+        }
+    }
 
     /**
      * 获取七牛云个人储存空间域名地址
      *
      * @return
      */
-    @ApiOperation(value = "获取外链地址")
     @GetMapping(value = "/domain")
     public R domain() {
-        return new R(URL);
+        QiniuProperties qiniu = properties.getQiniu();
+        return new R<>(qiniu.getUrl());
     }
 
     /**
@@ -78,14 +74,15 @@ public class QiniuController {
      *
      * @return
      */
-    @ApiOperation(value = "获取七牛云对象实例文件列表")
     @GetMapping(value = "/list")
-    public R<Map> list() {
+    public R list() {
+        QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         try {
             //构造一个带指定Zone对象的配置类
             Configuration cfg = new Configuration(Zone.zone0());
             //...其他参数参考类注释
-            Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+            Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
             BucketManager bucketManager = new BucketManager(auth, cfg);
             //文件名前缀
             String prefix = "";
@@ -94,20 +91,19 @@ public class QiniuController {
             //指定目录分隔符，列出所有公共前缀（模拟列出目录效果）。缺省值为空字符串
             String delimiter = "";
             //列举空间文件列表
-            BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(BUCKET_NAME, prefix, limit, delimiter);
-            List<Storage> list = new ArrayList<>();
+            BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(qiniu.getBn(), prefix, limit, delimiter);
+            List<QiniuInfo> list = new ArrayList<>();
             while (fileListIterator.hasNext()) {
                 //处理获取的file list结果
                 FileInfo[] items = fileListIterator.next();
                 for (FileInfo item : items) {
-                    Storage storage = new Storage(item.hash, item.key, item.mimeType, item.fsize, URL + item.key);
-                    list.add(storage);
+                    QiniuInfo qiNiuEntity = new QiniuInfo(item.hash, item.key, item.mimeType, item.fsize, qiniu.getUrl() + item.key);
+                    list.add(qiNiuEntity);
                 }
             }
             Map map = new HashMap();
-            map.put("total", list.size());
             map.put("rows", list);
-            return new R<>(map);
+            return new R(map);
         } catch (Exception e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -125,16 +121,15 @@ public class QiniuController {
      * <p>
      * 此部分我后续会写文档讲解
      */
-    @Log("七牛云文件上传")
-    @ApiOperation("文件上传接口")
     @RequestMapping("/upload")
-    public R<Map> upload(@RequestParam("file") MultipartFile file) {
+    public R upload(@RequestParam("file") MultipartFile file) {
+        QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         if (!file.isEmpty()) {
-
             //上传文件路径
             String FilePath = "";
             //上传到七牛后保存的文件名
-            String key = (long) Math.random() * 10000000 + "";
+            String key = new Date().getTime() + "";
 
             try {
                 //将MutipartFile对象转换为File对象，相当于需要以本地作为缓冲区暂时储存文件
@@ -155,20 +150,20 @@ public class QiniuController {
                 FilePath = filePath + "/" + key;
 
                 //密钥配置
-                Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+                Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
                 //第二种方式: 自动识别要上传的空间(bucket)的存储区域是华东、华北、华南。
                 Zone z = Zone.autoZone();
                 Configuration c = new Configuration(z);
                 //创建上传对象
                 UploadManager uploadManager = new UploadManager(c);
                 //调用put方法上传
-                Response res = uploadManager.put(FilePath, key, auth.uploadToken(BUCKET_NAME));
+                Response res = uploadManager.put(FilePath, key, auth.uploadToken(qiniu.getBn()));
                 //打印返回的信息
                 //res.bodyString() 返回数据格式： {"hash":"FlHXdiArTIzeNy94EOxzlCQC7pDS","key":"1074213185631420416.png"}
                 log.info("文件上传成功============>" + res.bodyString());
                 Map map = new HashMap<>();
                 map.put("name", key);
-                map.put("url", URL + key);
+                map.put("url", qiniu.getUrl() + key);
 
                 if (localFile.exists()) {
                     localFile.delete(); //删除本地缓存的文件
@@ -176,10 +171,11 @@ public class QiniuController {
                 return new R<>(map);
             } catch (Exception e) {
                 e.printStackTrace();
+                log.error("文件上传失败============>" + e.getMessage());
                 throw new GlobalException(e.getMessage());
             }
         }
-        return null;
+        return new R(CommonEnums.FILE_ERROR);
     }
 
     /**
@@ -188,14 +184,13 @@ public class QiniuController {
      * @param name 文件名称
      * @return 返回文件在七牛云储存的地址：外链/文件名  前端处理下载
      */
-    @Log("七牛云文件下载")
-    @ApiOperation(value = "七牛云文件下载")
-    @ApiImplicitParam(name = "name", value = "文件名称", required = true, dataType = "String")
-    @RequestMapping(value = "/download")
+    @GetMapping("/download")
     public ResponseEntity<byte[]> download(@RequestParam("name") String name) {
+        QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         try {
             String encodedFileName = URLEncoder.encode(name, "utf-8"); //获取文件名，防止乱码
-            String fileUrl = String.format("%s%s", URL, encodedFileName); //拼接得到文件的连接地址
+            String fileUrl = String.format("%s%s", qiniu.getUrl(), encodedFileName); //拼接得到文件的连接地址
             //获取外部文件流
             URL url = new URL(fileUrl);
             //打开一个连接
@@ -220,7 +215,7 @@ public class QiniuController {
             //设置请求头的媒体格式类型为 application/octet-stream(二进制流数据)
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             System.out.println(fileUrl);
-            return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.CREATED);
+            return new ResponseEntity<byte[]>(outputStream.toByteArray(), headers, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -230,20 +225,19 @@ public class QiniuController {
     /**
      * 七牛云开放API接口: 文件删除
      *
-     * @param key 文件的key
+     * @param name 删除的文件名称，在七牛云API中，对应：key
      * @return
      */
-    @Log("七牛云文件删除")
-    @ApiOperation(value = "文件删除")
-    @ApiImplicitParam(name = "key", value = "文件Key", required = true, dataType = "String")
-    @DeleteMapping("/{key}")
-    public R delete(@PathVariable("key") String key) {
+    @DeleteMapping("/delete")
+    public R delete(@RequestParam("name") String name) {
+        QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
-        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
-            bucketManager.delete(BUCKET_NAME, key);
+            bucketManager.delete(qiniu.getBn(), name);
             return new R();
         } catch (QiniuException e) {
             e.printStackTrace();
@@ -258,20 +252,16 @@ public class QiniuController {
      * @param newname 文件新名称
      * @return
      */
-    @Log("七牛云文件更新")
-    @ApiOperation(value = "文件更新")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "oldname", value = "原始文件名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "newname", value = "新文件名称", required = true, dataType = "String")
-    })
-    @PutMapping
+    @GetMapping("/update")
     public R update(@RequestParam("oldname") String oldname, @RequestParam("newname") String newname) {
+        QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
-        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
-            bucketManager.move(BUCKET_NAME, oldname, BUCKET_NAME, newname);
+            bucketManager.move(qiniu.getBn(), oldname, qiniu.getBn(), newname);
             return new R();
         } catch (QiniuException e) {
             e.printStackTrace();
@@ -285,23 +275,24 @@ public class QiniuController {
      * @param name 要查询的文件名称
      * @return
      */
-    @ApiOperation("根据文件名查询文件信息")
-    @ApiImplicitParam(name = "name", value = "文件名称", required = true, dataType = "String")
-    @GetMapping("/{name}")
-    public R<List> find(@PathVariable("name") String name) {
+    @GetMapping("/find")
+    public R find(@RequestParam("name") String name) {
+        QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
-        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
-            FileInfo fileInfo = bucketManager.stat(BUCKET_NAME, name);
-            Storage storage = new Storage(fileInfo.hash, name, fileInfo.mimeType, fileInfo.fsize, URL + name);
-            List<Storage> list = new ArrayList<>();
-            list.add(storage);
+            FileInfo fileInfo = bucketManager.stat(qiniu.getBn(), name);
+            QiniuInfo qiNiuEntity = new QiniuInfo(fileInfo.hash, name, fileInfo.mimeType, fileInfo.fsize, qiniu.getUrl() + name);
+            List<QiniuInfo> list = new ArrayList<>();
+            list.add(qiNiuEntity);
             return new R<>(list);
         } catch (QiniuException e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
         }
     }
+
 }
