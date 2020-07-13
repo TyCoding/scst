@@ -5,7 +5,7 @@
     <parent>
         <groupId>cn.tycoding</groupId>
         <artifactId>scst</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>scst-common</artifactId>
     <packaging>pom</packaging>
@@ -13,5 +13,7 @@
     <modules>
         <module>scst-common-core</module>
         <module>scst-common-log</module>
+        <module>scst-common-security</module>
+        <module>scst-common-web</module>
     </modules>
 </project>

@@ -1,11 +1,11 @@
 package cn.tycoding.scst.system.biz.controller;
 
 import cn.tycoding.scst.common.core.constant.enums.CommonEnums;
-import cn.tycoding.scst.common.core.controller.BaseController;
-import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.common.core.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.common.security.utils.SecurityUtil;
+import cn.tycoding.scst.common.web.controller.BaseController;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.UserInfo;
 import cn.tycoding.scst.system.api.entity.SysUser;
 import cn.tycoding.scst.system.api.entity.SysUserWithRole;
@@ -20,7 +20,7 @@ import java.util.List;
  * 用户接口
  *
  * @author tycoding
- * @date 2019-06-02
+ * @date 2020/7/13
  */
 @RestController
 @RequestMapping("/user")

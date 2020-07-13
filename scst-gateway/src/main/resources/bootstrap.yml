@@ -4,22 +4,14 @@ server:
 spring:
   application:
     name: scst-gateway
-
   profiles:
     active: dev
   cloud:
-    config:
-      name: ${spring.application.name}
-      profile: ${spring.profiles.active}
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://scst-eureka:8761/eureka/
-
-zuul:
-  #需要忽略的头部信息，不在传播到其他服务
-  sensitive-headers: Access-Control-Allow-Origin
-  ignored-headers: Access-Control-Allow-Origin,H-APP-Id,Token,APPToken
+    nacos:
+      discovery:
+        server-addr: scst-nacos:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}

@@ -1,5 +1,5 @@
 server:
-  port: 5000
+  port: 4000
 
 spring:
   application:
@@ -10,9 +10,14 @@ spring:
   profiles:
     active: dev
   cloud:
-    config:
-      name: ${spring.application.name}
-      profile: ${spring.profiles.active}
+    nacos:
+      discovery:
+        server-addr: scst-nacos:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
 
 security:
   oauth2:
@@ -23,28 +28,3 @@ security:
       user-authorization-uri: http://scst-auth:4000/oauth/authorize
     resource:
       token-info-uri: http://scst-auth:4000/oauth/check_token
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://scst-eureka:8761/eureka/
-
-# 暴露监控端点
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-mybatis-plus:
-  # 实体类扫描路径
-  type-aliases-package: cn.tycoding.scst.system.api.entity
-  # xml 扫描路径
-  mapper-locations: classpath:mapper/*.xml
-  configuration:
-    jdbc-type-for-null: null
-  global-config:
-    # 关闭 mybatis-plus的 banner
-    banner: false

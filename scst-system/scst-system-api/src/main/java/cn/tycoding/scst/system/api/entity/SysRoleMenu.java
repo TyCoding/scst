@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 角色菜单关联表
  *
  * @author tycoding
- * @date 2019-06-03
+ * @date 2020/7/13
  */
 @Data
 @TableName(value = "sys_role_menu")

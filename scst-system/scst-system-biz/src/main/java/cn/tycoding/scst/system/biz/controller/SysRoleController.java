@@ -1,9 +1,9 @@
 package cn.tycoding.scst.system.biz.controller;
 
-import cn.tycoding.scst.common.core.controller.BaseController;
-import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.common.core.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
+import cn.tycoding.scst.common.web.controller.BaseController;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
 import cn.tycoding.scst.system.biz.service.SysRoleService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author tycoding
- * @date 2019-06-03
+ * @date 2020/7/13
  */
 @RestController
 @RequestMapping("/role")

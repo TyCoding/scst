@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * Feign系统日志远程调用接口
  *
  * @author tycoding
- * @date 2019-06-09
+ * @date 2020/7/13
  */
 @FeignClient(value = ServiceNameConstants.SYSTEM_SERVICE, fallback = RemoteLogServiceFallbackImpl.class)
 public interface RemoteLogService {

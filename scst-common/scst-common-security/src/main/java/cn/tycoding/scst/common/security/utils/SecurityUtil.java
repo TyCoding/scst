@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 @UtilityClass
 public class SecurityUtil {

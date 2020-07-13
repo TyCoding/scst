@@ -1,13 +1,13 @@
 package cn.tycoding.scst.system.biz.service;
 
-import cn.tycoding.scst.common.core.utils.QueryPage;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
 public interface SysLogService extends IService<SysLog> {
 

@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  * OAuth2认证服务器
  *
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/12
  */
 @Configuration
 @EnableAuthorizationServer

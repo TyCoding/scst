@@ -10,7 +10,7 @@ import java.util.Collection;
  * 封装UserDetails扩展的User信息
  *
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 public class ScstUser extends User {
 

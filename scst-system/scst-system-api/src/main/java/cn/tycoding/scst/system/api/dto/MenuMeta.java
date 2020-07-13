@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 用于构建Vue组件Meta
  *
  * @author tycoding
- * @date 2019-10-20
+ * @date 2020/7/13
  */
 @Data
 @AllArgsConstructor

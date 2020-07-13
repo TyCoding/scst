@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * 全局异常处理器
  *
  * @author tycoding
- * @date 2019-06-04
+ * @date 2020/7/13
  */
 @Slf4j
 @RestControllerAdvice

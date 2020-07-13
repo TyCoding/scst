@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * 试用开源的ip2region库，开源地址：https://github.com/lionsoul2014/ip2region
  *
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
 public class AddressUtil {
 

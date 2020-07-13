@@ -9,7 +9,7 @@ import java.util.Set;
  * 封装用户基本信息、角色信息、权限信息
  *
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 @Data
 public class UserInfo {

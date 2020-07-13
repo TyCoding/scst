@@ -1,6 +1,6 @@
 package cn.tycoding.scst.system.biz.service;
 
-import cn.tycoding.scst.common.core.utils.QueryPage;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.MenuTree;
 import cn.tycoding.scst.system.api.dto.Tree;
 import cn.tycoding.scst.system.api.entity.SysMenu;
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author tycoding
- * @date 2019-06-02
+ * @date 2020/7/13
  */
 public interface SysMenuService extends IService<SysMenu> {
 

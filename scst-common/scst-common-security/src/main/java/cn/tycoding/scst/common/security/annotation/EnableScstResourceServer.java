@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * 扩展资源服务器注解
  *
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 @Documented
 @Inherited

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author tycoding
- * @date 2019-06-02
+ * @date 2020/7/13
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 

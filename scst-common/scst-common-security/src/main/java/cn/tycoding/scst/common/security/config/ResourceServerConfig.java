@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 
 /**
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
@@ -20,8 +20,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,
-                        "/upload/**",
-                        "/",
                         "/*.html",
                         "/favicon.ico",
                         "/**/*.html",
@@ -32,7 +30,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/v2/api-docs/**")
                 .permitAll()
 
-                .antMatchers("/actuator/**", "/user/info/*", "/storage/local/upload")
+                .antMatchers("/actuator/**", "/user/info/*")
                 .permitAll()
 
                 .anyRequest()

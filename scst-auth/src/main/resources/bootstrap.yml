@@ -1,5 +1,5 @@
 server:
-  port: 4000
+  port: 3000
 
 spring:
   application:
@@ -10,30 +10,11 @@ spring:
   profiles:
     active: dev
   cloud:
-    config:
-      name: ${spring.application.name}
-      profile: ${spring.profiles.active}
-
-# feign 配置
-feign:
-  hystrix:
-    enabled: true
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://scst-eureka:8761/eureka/
-
-# 暴露监控端点
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-mybatis-plus:
-  global-config:
-    # 关闭 mybatis-plus的 banner
-    banner: false
+    nacos:
+      discovery:
+        server-addr: scst-nacos:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}

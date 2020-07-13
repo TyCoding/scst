@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
  * 处理跨域请求
  *
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
 @Component
 @Configuration

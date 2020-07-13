@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.tycoding.scst.common.web.config.MybatisPlusAutoConfig, \
+  cn.tycoding.scst.common.web.config.SwaggerAutoConfig, \
+  cn.tycoding.scst.common.web.properties.ScstProperties

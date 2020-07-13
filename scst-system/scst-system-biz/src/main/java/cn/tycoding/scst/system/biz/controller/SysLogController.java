@@ -1,10 +1,10 @@
 package cn.tycoding.scst.system.biz.controller;
 
-import cn.tycoding.scst.common.core.controller.BaseController;
 import cn.tycoding.scst.common.core.exception.GlobalException;
-import cn.tycoding.scst.common.core.utils.QueryPage;
 import cn.tycoding.scst.common.core.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
+import cn.tycoding.scst.common.web.controller.BaseController;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import cn.tycoding.scst.system.biz.service.SysLogService;
 import io.swagger.annotations.Api;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
 @RestController
 @RequestMapping("/log")

@@ -1,7 +1,7 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
 import cn.tycoding.scst.common.log.utils.AddressUtil;
-import cn.tycoding.scst.common.core.utils.QueryPage;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import cn.tycoding.scst.system.biz.mapper.SysLogMapper;
 import cn.tycoding.scst.system.biz.service.SysLogService;
@@ -17,7 +17,7 @@ import java.util.Date;
 
 /**
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
 @Service
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 @FeignClient(value = ServiceNameConstants.SYSTEM_SERVICE, fallback = RemoteUserServiceFallbackImpl.class)
 public interface RemoteUserService {

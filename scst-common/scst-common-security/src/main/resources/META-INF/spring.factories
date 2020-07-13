@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.tycoding.scst.common.security.config.SwaggerConfig, \
-  cn.tycoding.scst.common.security.properties.ScstProperties

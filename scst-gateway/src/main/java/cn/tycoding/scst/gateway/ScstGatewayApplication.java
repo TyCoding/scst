@@ -1,19 +1,15 @@
 package cn.tycoding.scst.gateway;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
- * API网关 Zuul
+ * Spring Cloud Gateway 路由网关
  *
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
-@EnableZuulProxy
-@EnableEurekaClient
-@SpringBootApplication
+@SpringCloudApplication
 public class ScstGatewayApplication {
 
     public static void main(String[] args) {

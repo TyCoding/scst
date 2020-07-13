@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/12
  */
 @Configuration
 @EnableWebSecurity
@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/info/*", "/actuator/**", "/token/logout")
+                .antMatchers("/token/**", "/user/info/*", "/actuator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -1,6 +1,6 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
-import cn.tycoding.scst.common.core.utils.QueryPage;
+import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysRoleMenu;
 import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author tycoding
- * @date 2019-06-02
+ * @date 2020/7/13
  */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {

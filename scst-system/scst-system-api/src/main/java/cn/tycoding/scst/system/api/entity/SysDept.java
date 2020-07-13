@@ -15,7 +15,7 @@ import java.util.Date;
  * 部门表
  *
  * @author tycoding
- * @date 2019-06-03
+ * @date 2020/7/13
  */
 @Data
 @TableName(value = "sys_dept")

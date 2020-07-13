@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @author tycoding
- * @date 2019-06-02
+ * @date 2020/7/13
  */
 public interface SysDeptMapper extends BaseMapper<SysDept> {
 

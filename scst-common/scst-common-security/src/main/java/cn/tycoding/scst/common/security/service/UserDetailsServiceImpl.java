@@ -20,7 +20,7 @@ import java.util.Set;
 
 /**
  * @author tycoding
- * @date 2019-06-19
+ * @date 2020/7/13
  */
 @Slf4j
 @Service
@@ -38,9 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("loadUserByUsername >>>>>>>>>>>>> username = {}", username);
+        log.info("loadUserByUsername >>>>>>>>>>>>> username: {}", username);
         R<UserInfo> info = remoteUserService.info(username);
-        log.info("success >>>>>>>>>>>>>> info = {}", info);
+        log.info("loadUserByUsername success >>>>>>>>>>>>>> info: {}", info);
         return getUserDetails(info);
     }
 

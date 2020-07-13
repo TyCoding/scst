@@ -1,11 +1,7 @@
 package cn.tycoding.scst.common.log.aspect;
 
 import cn.tycoding.scst.common.log.event.SysLogEvent;
-import cn.tycoding.scst.common.log.utils.AddressUtil;
-import cn.tycoding.scst.common.log.utils.SpringContextHolder;
-import cn.tycoding.scst.common.log.utils.SysLogUtil;
-import cn.tycoding.scst.common.core.utils.IPUtil;
-import cn.tycoding.scst.common.core.utils.HttpContextUtil;
+import cn.tycoding.scst.common.log.utils.*;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +20,7 @@ import java.util.Date;
  * 日志切面
  *
  * @author tycoding
- * @date 2019-06-08
+ * @date 2020/7/13
  */
 @Slf4j
 @Aspect
