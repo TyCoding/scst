@@ -66,6 +66,10 @@ ScstVisualSentinelApplication
 ScstVisualAdminApplication
 ```
 
+## 鸣谢
+
+[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig) 项目中很多地方借鉴`pig`项目设计，非常感谢原作者提供这么好的开源项目。
+
 ## Docs
 
 后续将在我的公众号 **程序员涂陌** 中陆续发布，请持续关注！
