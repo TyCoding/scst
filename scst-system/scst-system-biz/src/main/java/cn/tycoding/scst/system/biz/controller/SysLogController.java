@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/log")
-@Api(value = "SysLogController", tags = {"部门管理接口"})
+@Api(value = "SysLogController", tags = {"日志管理接口"})
 public class SysLogController extends BaseController {
 
     @Autowired

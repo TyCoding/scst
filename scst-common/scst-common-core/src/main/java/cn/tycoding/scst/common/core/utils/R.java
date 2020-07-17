@@ -2,6 +2,7 @@ package cn.tycoding.scst.common.core.utils;
 
 import cn.tycoding.scst.common.core.constant.CommonConstants;
 import cn.tycoding.scst.common.core.constant.enums.CommonEnums;
+import cn.tycoding.scst.common.core.constant.enums.ScstHttpStatus;
 import lombok.*;
 
 import java.io.Serializable;
@@ -48,15 +49,15 @@ public class R<T> implements Serializable {
         this.msg = enums.getMsg();
     }
 
+    public R(ScstHttpStatus enums) {
+        super();
+        this.code = enums.getCode();
+        this.msg = enums.getMsg();
+    }
+
     public R(Throwable e) {
         super();
         this.code = CommonConstants.ERROR;
         this.msg = e.getMessage();
-    }
-
-    public R(String message, Throwable e) {
-        super();
-        this.msg = message;
-        this.code = CommonConstants.ERROR;
     }
 }

@@ -24,12 +24,17 @@ public class SysRoleController extends BaseController {
     private SysRoleService sysRoleService;
 
     @PostMapping("/list")
-    public R list(@RequestBody SysRole role, QueryPage queryPage) {
-        return new R<>(super.getData(sysRoleService.list(role, queryPage)));
+    public R list(@RequestBody SysRole sysRole, QueryPage queryPage) {
+        return new R<>(super.getData(sysRoleService.list(sysRole, queryPage)));
+    }
+
+    @PostMapping("/filter/list")
+    public R list(@RequestBody SysRole sysRole) {
+        return new R<>(sysRoleService.list(sysRole));
     }
 
     @GetMapping("/{id}")
-    public R<SysRoleWithMenu> findById(@PathVariable Long id) {
+    public R findById(@PathVariable Long id) {
         if (id == null || id == 0) {
             return new R<>();
         } else {
@@ -39,8 +44,8 @@ public class SysRoleController extends BaseController {
 
     @Log("添加角色")
     @PostMapping
-    public R add(@RequestBody SysRoleWithMenu role) {
-        sysRoleService.add(role);
+    public R add(@RequestBody SysRoleWithMenu sysRole) {
+        sysRoleService.add(sysRole);
         return new R();
     }
 
@@ -53,8 +58,8 @@ public class SysRoleController extends BaseController {
 
     @Log("更新角色")
     @PutMapping
-    public R edit(@RequestBody SysRoleWithMenu role) {
-        sysRoleService.update(role);
+    public R edit(@RequestBody SysRoleWithMenu sysRole) {
+        sysRoleService.update(sysRole);
         return new R();
     }
 

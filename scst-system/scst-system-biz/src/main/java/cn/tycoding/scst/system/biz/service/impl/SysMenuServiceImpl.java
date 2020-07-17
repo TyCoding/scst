@@ -40,12 +40,20 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public IPage<SysMenu> list(SysMenu menu, QueryPage queryPage) {
+    public IPage<SysMenu> list(SysMenu sysMenu, QueryPage queryPage) {
         IPage<SysMenu> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
         LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotBlank(menu.getName()), SysMenu::getName, menu.getName());
-        queryWrapper.like(StringUtils.isNotBlank(menu.getType()), SysMenu::getType, menu.getType());
+        queryWrapper.like(StringUtils.isNotBlank(sysMenu.getName()), SysMenu::getName, sysMenu.getName());
+        queryWrapper.like(StringUtils.isNotBlank(sysMenu.getType()), SysMenu::getType, sysMenu.getType());
         return sysMenuMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public List<SysMenu> list(SysMenu sysMenu) {
+        LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(sysMenu.getName()), SysMenu::getName, sysMenu.getName());
+        queryWrapper.like(StringUtils.isNotBlank(sysMenu.getType()), SysMenu::getType, sysMenu.getType());
+        return sysMenuMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -83,6 +91,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     tree.setMeta(new MenuMeta(menu.getName(), menu.getIcon()));
                     tree.setComponent(menu.getComponent());
                     tree.setHidden(menu.getHidden());
+                    tree.setFrame(menu.getFrame());
                     tree.setParentId(menu.getParentId());
                     treeList.add(tree);
                 }
@@ -117,16 +126,16 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     @Transactional
-    public void add(SysMenu menu) {
-        if (menu.getParentId() == null) {
-            menu.setParentId(0L);
+    public void add(SysMenu sysMenu) {
+        if (sysMenu.getParentId() == null) {
+            sysMenu.setParentId(0L);
         }
         // TODO
-        if (SysMenu.TYPE_BUTTON.equals(menu.getType())) {
-            menu.setPath(null);
-            menu.setIcon(null);
+        if (SysMenu.TYPE_BUTTON.equals(sysMenu.getType())) {
+            sysMenu.setPath(null);
+            sysMenu.setIcon(null);
         }
-        this.save(menu);
+        this.save(sysMenu);
     }
 
     @Override
@@ -139,15 +148,15 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     @Transactional
-    public void update(SysMenu menu) {
-        if (menu.getParentId() == null) {
-            menu.setParentId(0L);
+    public void update(SysMenu sysMenu) {
+        if (sysMenu.getParentId() == null) {
+            sysMenu.setParentId(0L);
         }
         // TODO
-        if (SysMenu.TYPE_BUTTON.equals(menu.getType())) {
-            menu.setIcon(null);
+        if (SysMenu.TYPE_BUTTON.equals(sysMenu.getType())) {
+            sysMenu.setIcon(null);
         }
-        this.updateById(menu);
+        this.updateById(sysMenu);
     }
 
     @Override

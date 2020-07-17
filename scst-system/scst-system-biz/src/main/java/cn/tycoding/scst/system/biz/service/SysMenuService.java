@@ -17,59 +17,46 @@ public interface SysMenuService extends IService<SysMenu> {
 
     /**
      * 根据用户名获取用户的权限信息
-     *
-     * @param username
-     * @return
      */
     List<SysMenu> findUserPermissions(String username);
 
     /**
-     * @param menu
-     * @return
+     * 分页、条件查询
      */
     IPage<SysMenu> list(SysMenu menu, QueryPage queryPage);
 
     /**
+     * 条件查询
+     */
+    List<SysMenu> list(SysMenu menu);
+
+    /**
      * 获取菜单Tree树
-     *
-     * @return
      */
     List<Tree<SysMenu>> tree();
 
     /**
-     * 用于构建左侧权限菜单
-     *
-     * @return
+     * 构建左侧权限菜单
      */
     List<MenuTree<SysMenu>> build();
 
     /**
-     * 添加权限
-     *
-     * @param menu
+     * 添加菜单
      */
     void add(SysMenu menu);
 
     /**
-     * 删除权限
-     *
-     * @param id
+     * 删除菜单
      */
     void delete(Long id);
 
     /**
-     * 更新权限
-     *
-     * @param menu
+     * 更新菜单
      */
     void update(SysMenu menu);
 
     /**
      * 校验当前名称是否存在
-     *
-     * @param name 名称
-     * @param id   ID，如果是修改操作，name就一定存在
-     * @return
      */
     boolean checkName(String name, String id);
 }

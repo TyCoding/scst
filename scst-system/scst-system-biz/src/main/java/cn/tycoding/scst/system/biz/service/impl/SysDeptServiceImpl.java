@@ -45,23 +45,31 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
 
     @Override
-    public IPage<SysDept> list(SysDept dept, QueryPage queryPage) {
+    public IPage<SysDept> list(SysDept sysDept, QueryPage queryPage) {
         IPage<SysDept> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
         LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(SysDept::getCreateTime);
-        queryWrapper.like(StringUtils.isNotBlank(dept.getName()), SysDept::getName, dept.getName());
+        queryWrapper.like(StringUtils.isNotBlank(sysDept.getName()), SysDept::getName, sysDept.getName());
         return sysDeptMapper.selectPage(page, queryWrapper);
     }
 
     @Override
+    public List<SysDept> list(SysDept sysDept) {
+        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc(SysDept::getCreateTime);
+        queryWrapper.like(StringUtils.isNotBlank(sysDept.getName()), SysDept::getName, sysDept.getName());
+        return sysDeptMapper.selectList(queryWrapper);
+    }
+
+    @Override
     @Transactional
-    public void add(SysDept dept) {
-        Long pId = dept.getParentId();
+    public void add(SysDept sysDept) {
+        Long pId = sysDept.getParentId();
         if (pId == null) {
-            dept.setParentId(0L);
+            sysDept.setParentId(0L);
         }
-        dept.setCreateTime(new Date());
-        this.save(dept);
+        sysDept.setCreateTime(new Date());
+        this.save(sysDept);
     }
 
     @Override
@@ -73,8 +81,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Override
     @Transactional
-    public void update(SysDept dept) {
-        this.updateById(dept);
+    public void update(SysDept sysDept) {
+        this.updateById(sysDept);
     }
 
     @Override

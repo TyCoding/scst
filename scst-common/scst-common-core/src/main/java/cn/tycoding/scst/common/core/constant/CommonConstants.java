@@ -20,4 +20,9 @@ public interface CommonConstants {
      * 错误标记
      */
     Integer ERROR = 500;
+
+    /**
+     * 空格
+     */
+    String BLANK_STR = " ";
 }

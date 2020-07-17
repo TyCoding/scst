@@ -22,38 +22,32 @@ public interface SysDeptService extends IService<SysDept> {
     List<Tree<SysDept>> tree();
 
     /**
-     * @param dept
-     * @return
+     * 分页、条件查询
      */
-    IPage<SysDept> list(SysDept dept, QueryPage queryPage);
+    IPage<SysDept> list(SysDept sysDept, QueryPage queryPage);
+
+    /**
+     * 条件查询
+     */
+    List<SysDept> list(SysDept sysDept);
 
     /**
      * 添加部门
-     *
-     * @param dept
      */
     void add(SysDept dept);
 
     /**
      * 删除部门
-     *
-     * @param id
      */
     void delete(Long id);
 
     /**
      * 更新部门
-     *
-     * @param dept
      */
-    void update(SysDept dept);
+    void update(SysDept sysDept);
 
     /**
      * 校验当前名称是否存在
-     *
-     * @param name 名称
-     * @param id   ID，如果是修改操作，name就一定存在
-     * @return
      */
     boolean checkName(String name, String id);
 }

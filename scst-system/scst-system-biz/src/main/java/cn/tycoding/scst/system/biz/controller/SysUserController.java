@@ -6,15 +6,12 @@ import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.common.security.utils.SecurityUtil;
 import cn.tycoding.scst.common.web.controller.BaseController;
 import cn.tycoding.scst.common.web.utils.QueryPage;
-import cn.tycoding.scst.system.api.dto.UserInfo;
 import cn.tycoding.scst.system.api.entity.SysUser;
 import cn.tycoding.scst.system.api.entity.SysUserWithRole;
 import cn.tycoding.scst.system.biz.service.SysUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 用户接口
@@ -36,7 +33,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @GetMapping("/info")
-    public R<UserInfo> info() {
+    public R info() {
         String username = SecurityUtil.getUsername();
         SysUser user = sysUserService.findByName(username);
         if (user == null) {
@@ -46,7 +43,7 @@ public class SysUserController extends BaseController {
     }
 
     @GetMapping("/info/{username}")
-    public R<UserInfo> info(@PathVariable("username") String username) {
+    public R info(@PathVariable("username") String username) {
         SysUser user = sysUserService.findByName(username);
         if (user == null) {
             return new R<>(CommonEnums.USER_ERROR);
@@ -66,12 +63,12 @@ public class SysUserController extends BaseController {
      * @return
      */
     @GetMapping("/getMenus/{username}")
-    public R<List> getMenus(@PathVariable("username") String username) {
+    public R getMenus(@PathVariable("username") String username) {
         return new R<>(sysUserService.getMenus(username));
     }
 
     @GetMapping("/{id}")
-    public R<SysUser> findById(@PathVariable Long id) {
+    public R findById(@PathVariable Long id) {
         if (id == null || id == 0) {
             return new R<>();
         } else {
@@ -108,7 +105,7 @@ public class SysUserController extends BaseController {
     }
 
     @GetMapping("/checkName/{name}/{id}")
-    public R<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+    public R checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
         return new R<>(sysUserService.checkName(name, id));
     }
 

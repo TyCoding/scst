@@ -10,8 +10,6 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author tycoding
  * @date 2020/7/13
@@ -25,17 +23,22 @@ public class SysDeptController extends BaseController {
     private SysDeptService sysDeptService;
 
     @PostMapping("/list")
-    public R list(SysDept dept, QueryPage queryPage) {
-        return new R<>(super.getData(sysDeptService.list(dept, queryPage)));
+    public R list(SysDept sysDept, QueryPage queryPage) {
+        return new R<>(super.getData(sysDeptService.list(sysDept, queryPage)));
+    }
+
+    @PostMapping("/filter/list")
+    public R list(@RequestBody SysDept sysDept) {
+        return new R<>(sysDeptService.list(sysDept));
     }
 
     @GetMapping("/tree")
-    public R<List> tree() {
+    public R tree() {
         return new R<>(sysDeptService.tree());
     }
 
     @GetMapping("/{id}")
-    public R<SysDept> findById(@PathVariable Long id) {
+    public R findById(@PathVariable Long id) {
         if (id == null || id == 0) {
             return new R<>();
         } else {
@@ -45,8 +48,8 @@ public class SysDeptController extends BaseController {
 
     @Log("添加部门")
     @PostMapping
-    public R add(@RequestBody SysDept dept) {
-        sysDeptService.add(dept);
+    public R add(@RequestBody SysDept sysDept) {
+        sysDeptService.add(sysDept);
         return new R();
     }
 
@@ -59,8 +62,8 @@ public class SysDeptController extends BaseController {
 
     @Log("更新部门")
     @PutMapping
-    public R edit(@RequestBody SysDept dept) {
-        sysDeptService.update(dept);
+    public R edit(@RequestBody SysDept sysDept) {
+        sysDeptService.update(sysDept);
         return new R();
     }
 

@@ -11,15 +11,11 @@ public interface SysUserRoleService extends IService<SysUserRole> {
 
     /**
      * 根据角色ID删除该用户的角色关联信息
-     *
-     * @param roleId
      */
     void deleteUserRolesByRoleId(Long roleId);
 
     /**
      * 根据用户ID删除该用户的角色关联信息
-     *
-     * @param userId
      */
     void deleteUserRolesByUserId(Long userId);
 }

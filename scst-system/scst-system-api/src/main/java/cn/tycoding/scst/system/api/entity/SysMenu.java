@@ -68,6 +68,11 @@ public class SysMenu implements Serializable {
      */
     private Boolean hidden;
 
+    /**
+     * 是否是外链
+     */
+    private Boolean frame;
+
     public void setName(String name) {
         this.name = name == null ? "" : name.trim();
     }

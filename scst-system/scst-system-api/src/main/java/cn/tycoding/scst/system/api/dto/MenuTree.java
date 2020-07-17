@@ -60,6 +60,11 @@ public class MenuTree<T> {
     private Boolean alwaysShow;
 
     /**
+     * 是否是外链
+     */
+    private Boolean frame;
+
+    /**
      * 子节点
      */
     private List<MenuTree<T>> children = new ArrayList<>();

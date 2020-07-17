@@ -47,12 +47,20 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public IPage<SysRole> list(SysRole role, QueryPage queryPage) {
+    public IPage<SysRole> list(SysRole sysRole, QueryPage queryPage) {
         IPage<SysRole> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
         LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotBlank(role.getName()), SysRole::getName, role.getName());
+        queryWrapper.like(StringUtils.isNotBlank(sysRole.getName()), SysRole::getName, sysRole.getName());
         queryWrapper.orderByDesc(SysRole::getCreateTime);
         return sysRoleMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public List<SysRole> list(SysRole sysRole) {
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(sysRole.getName()), SysRole::getName, sysRole.getName());
+        queryWrapper.orderByDesc(SysRole::getCreateTime);
+        return sysRoleMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -69,18 +77,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional
-    public void add(SysRoleWithMenu role) {
-        role.setCreateTime(new Date());
-        this.save(role);
-        saveRoleMenu(role);
+    public void add(SysRoleWithMenu sysRole) {
+        sysRole.setCreateTime(new Date());
+        this.save(sysRole);
+        saveRoleMenu(sysRole);
     }
 
-    private void saveRoleMenu(SysRoleWithMenu role) {
-        if (role.getMenuIds() != null && role.getMenuIds().get(0) != null) {
-            role.getMenuIds().forEach(menuId -> {
+    private void saveRoleMenu(SysRoleWithMenu sysRole) {
+        if (sysRole.getMenuIds() != null && sysRole.getMenuIds().get(0) != null) {
+            sysRole.getMenuIds().forEach(menuId -> {
                 SysRoleMenu roleMenu = new SysRoleMenu();
                 roleMenu.setMenuId(menuId);
-                roleMenu.setRoleId(role.getId());
+                roleMenu.setRoleId(sysRole.getId());
                 sysRoleMenuMapper.insert(roleMenu);
             });
         }
@@ -88,10 +96,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional
-    public void update(SysRoleWithMenu role) {
-        this.updateById(role);
-        sysRoleMenuService.deleteRoleMenusByRoleId(role.getId());
-        this.saveRoleMenu(role);
+    public void update(SysRoleWithMenu sysRole) {
+        this.updateById(sysRole);
+        sysRoleMenuService.deleteRoleMenusByRoleId(sysRole.getId());
+        this.saveRoleMenu(sysRole);
     }
 
     @Override

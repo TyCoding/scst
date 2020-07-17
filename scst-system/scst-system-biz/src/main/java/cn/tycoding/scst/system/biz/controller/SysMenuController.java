@@ -10,8 +10,6 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author tycoding
  * @date 2020/7/13
@@ -25,8 +23,13 @@ public class SysMenuController extends BaseController {
     private SysMenuService sysMenuService;
 
     @PostMapping("/list")
-    public R list(@RequestBody SysMenu menu, QueryPage queryPage) {
-        return new R<>(super.getData(sysMenuService.list(menu, queryPage)));
+    public R list(@RequestBody SysMenu sysMenu, QueryPage queryPage) {
+        return new R<>(super.getData(sysMenuService.list(sysMenu, queryPage)));
+    }
+
+    @PostMapping("/filter/list")
+    public R list(@RequestBody SysMenu sysMenu) {
+        return new R<>(sysMenuService.list(sysMenu));
     }
 
     @GetMapping("/tree")
@@ -40,12 +43,12 @@ public class SysMenuController extends BaseController {
      * @return
      */
     @GetMapping("/build")
-    public R<List> build() {
+    public R build() {
         return new R<>(sysMenuService.build());
     }
 
     @GetMapping("/{id}")
-    public R<SysMenu> findById(@PathVariable Long id) {
+    public R findById(@PathVariable Long id) {
         if (id == null || id == 0) {
             return new R<>();
         } else {
@@ -55,8 +58,8 @@ public class SysMenuController extends BaseController {
 
     @Log("添加权限")
     @PostMapping
-    public R add(@RequestBody SysMenu menu) {
-        sysMenuService.add(menu);
+    public R add(@RequestBody SysMenu sysMenu) {
+        sysMenuService.add(sysMenu);
         return new R();
     }
 
@@ -69,13 +72,13 @@ public class SysMenuController extends BaseController {
 
     @Log("更新权限")
     @PutMapping
-    public R edit(@RequestBody SysMenu menu) {
-        sysMenuService.update(menu);
+    public R edit(@RequestBody SysMenu sysMenu) {
+        sysMenuService.update(sysMenu);
         return new R();
     }
 
     @GetMapping("/checkName/{name}/{id}")
-    public R<Boolean> checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
+    public R checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
         return new R<>(sysMenuService.checkName(name, id));
     }
 }

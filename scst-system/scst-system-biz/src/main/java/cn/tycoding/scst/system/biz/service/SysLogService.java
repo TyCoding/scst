@@ -13,23 +13,16 @@ public interface SysLogService extends IService<SysLog> {
 
     /**
      * 分页、条件查询日志列表
-     *
-     * @param log
-     * @return
      */
     IPage<SysLog> list(SysLog log, QueryPage queryPage);
 
     /**
      * 根据ID删除日志记录
-     *
-     * @param id
      */
     void delete(Long id);
 
     /**
      * 保存操作日志
-     *
-     * @param log
      */
     void saveLog(SysLog log);
 }
