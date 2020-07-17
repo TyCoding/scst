@@ -1,6 +1,8 @@
-# Spring Cloud Security Template 分布式权限管理项目 -- 后端
+# Spring Cloud Security Template 
 
 > SCST. 基于SpringCloud Alibaba & Nacos构建的分布式权限管理系统  :rocket:
+
+**项目后端源码：[https://github.com/TyCoding/scst](https://github.com/TyCoding/scst)**
 
 **项目前端源码：[https://github.com/TyCoding/scst-ui](https://github.com/TyCoding/scst-ui)**
 
