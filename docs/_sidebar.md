@@ -1,9 +1,0 @@
-- **使用文档**
-  - [导入准备](docs/install/01ready.md)
-  - [导入项目](docs/install/02install.md)
-- **设计文档**
-  - [前端](docs/design/app)
-  - [后端](docs/design/api)
-- **开发文档**
-  - [前端](docs/develop/app)
-  - [后端](docs/develop/api)
