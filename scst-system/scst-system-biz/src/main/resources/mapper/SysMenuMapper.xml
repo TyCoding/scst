@@ -3,7 +3,7 @@
 
 <mapper namespace="cn.tycoding.scst.system.biz.mapper.SysMenuMapper">
 
-    <select id="findUserMenus" resultType="cn.tycoding.scst.system.api.entity.SysMenu">
+    <select id="findPermissionsByUserId" resultType="cn.tycoding.scst.system.api.entity.SysMenu">
         SELECT DISTINCT
             m.*
         FROM
@@ -17,7 +17,7 @@
             AND ur.user_id = u.id
             AND r.id = rm.role_id
             AND m.id = rm.menu_id
-            AND u.username = #{username}
+            AND u.id = #{id}
     </select>
 
     <update id="changeTopNode">

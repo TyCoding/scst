@@ -45,6 +45,11 @@ public class MenuTree<T> {
     private String component;
 
     /**
+     * 权限标识
+     */
+    private String perms;
+
+    /**
      * icon && title 信息
      */
     private MenuMeta meta;

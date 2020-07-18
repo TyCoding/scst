@@ -6,31 +6,31 @@ import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.common.security.utils.SecurityUtil;
 import cn.tycoding.scst.common.web.controller.BaseController;
 import cn.tycoding.scst.common.web.utils.QueryPage;
+import cn.tycoding.scst.system.api.dto.UserInfo;
 import cn.tycoding.scst.system.api.entity.SysUser;
-import cn.tycoding.scst.system.api.entity.SysUserWithRole;
 import cn.tycoding.scst.system.biz.service.SysUserService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 用户接口
+ * 用户表 前端控制器
  *
  * @author tycoding
  * @date 2020/7/13
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/user")
-@Api(value = "SysUserController", tags = {"用户管理接口"})
+@Api(value = "SysUserController", tags = {"用户管理模块"})
 public class SysUserController extends BaseController {
 
-    @Autowired
-    private SysUserService sysUserService;
+    private final SysUserService sysUserService;
 
     /**
      * 获取当前用户信息
      *
-     * @return
+     * @return UserInfo
      */
     @GetMapping("/info")
     public R info() {
@@ -42,31 +42,51 @@ public class SysUserController extends BaseController {
         return new R<>(sysUserService.getUserInfo(user));
     }
 
+    /**
+     * 根据用户名查询用户信息
+     * 为Feign服务，用户登录时Security需要存储用户信息
+     *
+     * @param username
+     * @return UserInfo
+     */
     @GetMapping("/info/{username}")
-    public R info(@PathVariable("username") String username) {
-        SysUser user = sysUserService.findByName(username);
-        if (user == null) {
+    public R loadUserInfo(@PathVariable("username") String username) {
+        SysUser sysUser = sysUserService.findByName(username);
+        if (sysUser == null) {
             return new R<>(CommonEnums.USER_ERROR);
         }
-        return new R<>(sysUserService.getUserInfo(user));
-    }
-
-    @PostMapping("/list")
-    public R list(@RequestBody SysUser user, QueryPage queryPage) {
-        return new R<>(super.getData(sysUserService.list(user, queryPage)));
+        return new R<>(sysUserService.getUserInfo(sysUser));
     }
 
     /**
-     * 根据用户名获取对应的权限列表
+     * 分页、条件查询用户列表信息
      *
-     * @param username
-     * @return
+     * @param sysUser   查询条件
+     * @param queryPage 分页参数
+     * @return Map
      */
-    @GetMapping("/getMenus/{username}")
-    public R getMenus(@PathVariable("username") String username) {
-        return new R<>(sysUserService.getMenus(username));
+    @PostMapping("/list")
+    public R list(@RequestBody SysUser sysUser, QueryPage queryPage) {
+        return new R<>(super.getData(sysUserService.list(sysUser, queryPage)));
     }
 
+    /**
+     * 根据用户ID获取对应的菜单列表
+     *
+     * @param id 用户名
+     * @return List
+     */
+    @GetMapping("/getMenus/{id}")
+    public R getMenuByUserId(@PathVariable("id") Long id) {
+        return new R<>(sysUserService.getMenuByUserId(id));
+    }
+
+    /**
+     * 根据用户ID获取用户信息
+     *
+     * @param id 用户ID
+     * @return UserInfo
+     */
     @GetMapping("/{id}")
     public R findById(@PathVariable Long id) {
         if (id == null || id == 0) {
@@ -76,10 +96,22 @@ public class SysUserController extends BaseController {
         }
     }
 
+    /**
+     * 校验当前用户名是否已存在
+     *
+     * @param sysUser id:当前修改对象的ID
+     *                username:需要校验的用户名
+     * @return Boolean
+     */
+    @PostMapping("/checkName")
+    public R checkName(@RequestBody SysUser sysUser) {
+        return new R<>(sysUserService.checkName(sysUser));
+    }
+
     @Log("添加用户")
     @PostMapping
-    public R add(@RequestBody SysUserWithRole user) {
-        sysUserService.add(user);
+    public R add(@RequestBody UserInfo userInfo) {
+        sysUserService.add(userInfo);
         return new R();
     }
 
@@ -92,21 +124,15 @@ public class SysUserController extends BaseController {
 
     @Log("更新用户")
     @PutMapping
-    public R edit(@RequestBody SysUserWithRole user) {
-        sysUserService.update(user);
+    public R update(@RequestBody UserInfo userInfo) {
+        sysUserService.update(userInfo);
         return new R();
     }
 
     @Log("修改密码")
-    @PostMapping("/changePass")
-    public R changePass(String password) {
-        sysUserService.updatePassword(password);
+    @PostMapping("/updatePass")
+    public R updatePass(@RequestBody SysUser sysUser) {
+        sysUserService.updatePass(sysUser);
         return new R();
     }
-
-    @GetMapping("/checkName/{name}/{id}")
-    public R checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
-        return new R<>(sysUserService.checkName(name, id));
-    }
-
 }

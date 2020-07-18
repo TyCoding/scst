@@ -1,22 +1,17 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
-import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.dto.Tree;
 import cn.tycoding.scst.system.api.entity.SysDept;
 import cn.tycoding.scst.system.api.utils.TreeUtils;
 import cn.tycoding.scst.system.biz.mapper.SysDeptMapper;
 import cn.tycoding.scst.system.biz.service.SysDeptService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,12 +21,9 @@ import java.util.List;
 @Service
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
-    @Autowired
-    private SysDeptMapper sysDeptMapper;
-
     @Override
     public List<Tree<SysDept>> tree() {
-        List<SysDept> deptList = sysDeptMapper.selectList(new LambdaQueryWrapper<>());
+        List<SysDept> deptList = baseMapper.selectList(new LambdaQueryWrapper<>());
         List<Tree<SysDept>> treeList = new ArrayList<>();
         deptList.forEach(dept -> {
             Tree<SysDept> tree = new Tree<>();
@@ -43,22 +35,31 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         return TreeUtils.build(treeList);
     }
 
-
-    @Override
-    public IPage<SysDept> list(SysDept sysDept, QueryPage queryPage) {
-        IPage<SysDept> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
-        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByDesc(SysDept::getCreateTime);
-        queryWrapper.like(StringUtils.isNotBlank(sysDept.getName()), SysDept::getName, sysDept.getName());
-        return sysDeptMapper.selectPage(page, queryWrapper);
-    }
-
     @Override
     public List<SysDept> list(SysDept sysDept) {
         LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByDesc(SysDept::getCreateTime);
         queryWrapper.like(StringUtils.isNotBlank(sysDept.getName()), SysDept::getName, sysDept.getName());
-        return sysDeptMapper.selectList(queryWrapper);
+        return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public SysDept findById(Long id) {
+        return baseMapper.selectById(id);
+    }
+
+    @Override
+    public boolean checkName(SysDept sysDept) {
+        if (StringUtils.isBlank(sysDept.getName())) {
+            return false;
+        }
+        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
+        if (sysDept.getId() != null && sysDept.getId() != 0) {
+            queryWrapper.eq(SysDept::getName, sysDept.getName());
+            queryWrapper.ne(SysDept::getId, sysDept.getId());
+        } else {
+            queryWrapper.eq(SysDept::getName, sysDept.getName());
+        }
+        return baseMapper.selectList(queryWrapper).size() <= 0;
     }
 
     @Override
@@ -68,15 +69,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         if (pId == null) {
             sysDept.setParentId(0L);
         }
-        sysDept.setCreateTime(new Date());
         this.save(sysDept);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        sysDeptMapper.deleteById(id);
-        sysDeptMapper.changeTopNode(id);
+        baseMapper.deleteById(id);
+        baseMapper.changeTopNode(id);
     }
 
     @Override
@@ -85,18 +85,4 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         this.updateById(sysDept);
     }
 
-    @Override
-    public boolean checkName(String name, String id) {
-        if (StringUtils.isBlank(name)) {
-            return false;
-        }
-        LambdaQueryWrapper<SysDept> queryWrapper = new LambdaQueryWrapper<>();
-        if (StringUtils.isNotBlank(id)) {
-            queryWrapper.eq(SysDept::getName, name);
-            queryWrapper.ne(SysDept::getId, id);
-        } else {
-            queryWrapper.eq(SysDept::getName, name);
-        }
-        return sysDeptMapper.selectList(queryWrapper).size() <= 0;
-    }
 }

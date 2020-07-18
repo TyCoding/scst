@@ -3,50 +3,64 @@ package cn.tycoding.scst.system.biz.controller;
 import cn.tycoding.scst.common.core.utils.R;
 import cn.tycoding.scst.common.log.annotation.Log;
 import cn.tycoding.scst.common.web.controller.BaseController;
-import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.biz.service.SysMenuService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 菜单表 前端控制器
+ *
  * @author tycoding
  * @date 2020/7/13
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/menu")
-@Api(value = "SysMenuController", tags = {"菜单管理接口"})
+@Api(value = "SysMenuController", tags = {"菜单管理模块"})
 public class SysMenuController extends BaseController {
 
-    @Autowired
-    private SysMenuService sysMenuService;
+    private final SysMenuService sysMenuService;
 
-    @PostMapping("/list")
-    public R list(@RequestBody SysMenu sysMenu, QueryPage queryPage) {
-        return new R<>(super.getData(sysMenuService.list(sysMenu, queryPage)));
-    }
-
-    @PostMapping("/filter/list")
-    public R list(@RequestBody SysMenu sysMenu) {
-        return new R<>(sysMenuService.list(sysMenu));
-    }
-
+    /**
+     * 构建菜单Tree树，此接口将获取菜单表中所有数据
+     *
+     * @return List
+     */
     @GetMapping("/tree")
     public R tree() {
         return new R<>(sysMenuService.tree());
     }
 
     /**
-     * 加载系统左侧权限菜单
+     * 加载系统左侧权限菜单，此接口将获取菜单中`menu`类型的数据
      *
-     * @return
+     * @return List
      */
     @GetMapping("/build")
     public R build() {
         return new R<>(sysMenuService.build());
     }
 
+    /**
+     * 校验当前名称是否已存在
+     *
+     * @param sysMenu id:当前修改对象的ID
+     *                name:需要校验的名称
+     * @return Boolean
+     */
+    @PostMapping("/checkName")
+    public R checkName(@RequestBody SysMenu sysMenu) {
+        return new R<>(sysMenuService.checkName(sysMenu));
+    }
+
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public R findById(@PathVariable Long id) {
         if (id == null || id == 0) {
@@ -75,10 +89,5 @@ public class SysMenuController extends BaseController {
     public R edit(@RequestBody SysMenu sysMenu) {
         sysMenuService.update(sysMenu);
         return new R();
-    }
-
-    @GetMapping("/checkName/{name}/{id}")
-    public R checkName(@PathVariable("name") String name, @PathVariable("id") String id) {
-        return new R<>(sysMenuService.checkName(name, id));
     }
 }

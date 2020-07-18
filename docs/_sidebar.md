@@ -1,5 +1,15 @@
 - **使用文档**
   - [导入准备](docs/install/01ready.md)
   - [导入项目](docs/install/02install.md)
+- **设计文档**
+  - **前端**
+  - **后端**
 - **开发文档**
-- **推荐阅读**
+  - **前端**
+  - **后端**
+- **扩展文档**
+  - **前端**
+    - [Vue组件进阶、ElementUI小技巧](docs/expand/app/vue-components.md)
+  - **后端**
+    - [Spring-IOC依赖注入之`@AllArgsConstructor`](docs/expand/api/ioc-dependency-injection.md)
+

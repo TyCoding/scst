@@ -1,31 +1,41 @@
 package cn.tycoding.scst.system.api.dto;
 
+import cn.tycoding.scst.system.api.entity.SysDept;
+import cn.tycoding.scst.system.api.entity.SysRole;
 import cn.tycoding.scst.system.api.entity.SysUser;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.util.List;
 import java.util.Set;
 
 /**
- * 封装用户基本信息、角色信息、权限信息
+ * 封装用户基本信息、角色信息、部门信息、权限信息
  *
  * @author tycoding
  * @date 2020/7/13
  */
 @Data
+@Accessors(chain = true)
 public class UserInfo {
 
     /**
      * 用户基本信息
      */
-    private SysUser sysUser;
+    private SysUser user;
+
+    /**
+     * 用户所属部门
+     */
+    private SysDept dept;
 
     /**
      * 用户角色列表
      */
-    Set<String> roles;
+    private List<SysRole> roles;
 
     /**
-     * 用户权限列表
+     * 用户权限标识
      */
-    Set<String> permissions;
+    private Set<String> permissions;
 }

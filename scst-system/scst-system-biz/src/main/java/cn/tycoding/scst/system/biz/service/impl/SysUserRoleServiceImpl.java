@@ -5,7 +5,6 @@ import cn.tycoding.scst.system.biz.mapper.SysUserRoleMapper;
 import cn.tycoding.scst.system.biz.service.SysUserRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements SysUserRoleService {
 
-    @Autowired
-    private SysUserRoleMapper sysUserRoleMapper;
-
     @Override
     @Transactional
     public void deleteUserRolesByRoleId(Long roleId) {
         LambdaQueryWrapper<SysUserRole> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysUserRole::getRoleId, roleId);
-        sysUserRoleMapper.delete(queryWrapper);
+        baseMapper.delete(queryWrapper);
     }
 
     @Override
@@ -32,6 +28,6 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     public void deleteUserRolesByUserId(Long userId) {
         LambdaQueryWrapper<SysUserRole> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysUserRole::getUserId, userId);
-        sysUserRoleMapper.delete(queryWrapper);
+        baseMapper.delete(queryWrapper);
     }
 }

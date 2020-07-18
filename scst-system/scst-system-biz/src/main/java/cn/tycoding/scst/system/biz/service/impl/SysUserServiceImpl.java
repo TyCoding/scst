@@ -1,10 +1,11 @@
 package cn.tycoding.scst.system.biz.service.impl;
 
 import cn.tycoding.scst.common.web.utils.QueryPage;
-import cn.tycoding.scst.system.api.dto.Tree;
+import cn.tycoding.scst.system.api.dto.MenuTree;
 import cn.tycoding.scst.system.api.dto.UserInfo;
+import cn.tycoding.scst.system.api.dto.UserWithInfo;
 import cn.tycoding.scst.system.api.entity.*;
-import cn.tycoding.scst.system.api.utils.TreeUtils;
+import cn.tycoding.scst.system.api.utils.MenuTreeUtils;
 import cn.tycoding.scst.system.biz.mapper.SysMenuMapper;
 import cn.tycoding.scst.system.biz.mapper.SysUserMapper;
 import cn.tycoding.scst.system.biz.mapper.SysUserRoleMapper;
@@ -13,12 +14,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -29,159 +31,148 @@ import java.util.stream.Collectors;
  * @date 2020/7/13
  */
 @Service
+@AllArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
-    @Autowired
-    private SysUserMapper sysUserMapper;
+    private final SysMenuMapper sysMenuMapper;
 
-    @Autowired
-    private SysMenuMapper sysMenuMapper;
+    private final SysUserRoleMapper sysUserRoleMapper;
 
-    @Autowired
-    private SysUserRoleMapper sysUserRoleMapper;
+    private final SysUserRoleService sysUserRoleService;
 
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private final SysRoleService sysRoleService;
 
-    @Autowired
-    private SysRoleService sysRoleService;
+    private final SysMenuService sysMenuService;
 
-    @Autowired
-    private SysMenuService sysMenuService;
+    private final SysDeptService sysDeptService;
 
-    @Autowired
-    private SysDeptService sysDeptService;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public UserInfo getUserInfo(SysUser user) {
-        UserInfo userInfo = new UserInfo();
+    public UserInfo getUserInfo(SysUser sysUser) {
+        UserInfo userInfo = new UserInfo().setUser(sysUser);
+        return this.build(userInfo);
+    }
 
+    /**
+     * 构建用户信息、角色信息、权限标识信息、部门信息
+     */
+    private UserInfo build(UserInfo userInfo) {
         //获取用户角色列表
-        List<SysRole> roleList = sysRoleService.findUserRoles(user.getUsername());
-        Set<String> roleSet = roleList.stream().map(SysRole::getName).collect(Collectors.toSet());
+        List<SysRole> roleList = sysRoleService.findRolesByUserId(userInfo.getUser().getId());
+        userInfo.setRoles(roleList);
 
         //获取用户权限列表
-        List<SysMenu> menuList = sysMenuService.findUserPermissions(user.getUsername());
+        List<SysMenu> menuList = sysMenuService.findPermissionsByUserId(userInfo.getUser().getId());
         Set<String> menuSet = menuList
                 .stream()
                 .filter(perm -> (perm.getPerms() != null && !perm.getPerms().equals("")))
                 .map(SysMenu::getPerms)
                 .collect(Collectors.toSet());
 
-        //获取用户部门列表
-//        SysDept dept = sysDeptService.findById(user.getDeptId());
+        //获取用户部门信息
+        SysDept sysDept = sysDeptService.findById(userInfo.getUser().getDeptId());
 
-        userInfo.setSysUser(user);
-        userInfo.setRoles(roleSet);
+        userInfo.setRoles(roleList);
         userInfo.setPermissions(menuSet);
+        userInfo.setDept(sysDept);
         return userInfo;
     }
 
     @Override
     public SysUser findByName(String username) {
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysUser::getUsername, username);
-        List<SysUser> list = sysUserMapper.selectList(queryWrapper);
+        queryWrapper.eq(StringUtils.isNoneBlank(username), SysUser::getUsername, username);
+        List<SysUser> list = baseMapper.selectList(queryWrapper);
         return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
-    public SysUserWithRole findById(Long id) {
-        List<SysUserWithRole> list = sysUserMapper.findById(id);
-        if (list.isEmpty()) {
-            return null;
-        }
-        List<Long> roleIds = list.stream().map(SysUserWithRole::getRoleId).collect(Collectors.toList());
-        SysUserWithRole sysUserWithRole = list.get(0);
-        sysUserWithRole.setRoleIds(roleIds);
-        return sysUserWithRole;
+    public UserInfo findById(Long id) {
+        UserInfo userInfo = new UserInfo().setUser(baseMapper.selectById(id));
+        return this.build(userInfo);
     }
 
     @Override
-    public List<Tree<SysMenu>> getMenus(String username) {
-        List<SysMenu> menus = sysMenuMapper.findUserMenus(username);
-        List<Tree<SysMenu>> treeList = new ArrayList<>();
-        menus.forEach(menu -> {
-            Tree<SysMenu> tree = new Tree<>();
-            tree.setId(menu.getId());
-            tree.setName(menu.getName());
-            tree.setPath(menu.getPath());
-            tree.setIcon(menu.getIcon());
-            tree.setType(menu.getType());
-            tree.setPerms(menu.getPerms());
-            tree.setComponent(menu.getComponent());
-            tree.setParentId(menu.getParentId());
-            treeList.add(tree);
+    public List<MenuTree<SysMenu>> getMenuByUserId(Long id) {
+        return MenuTreeUtils.build(sysMenuMapper.findPermissionsByUserId(id));
+    }
+
+    @Override
+    public IPage<UserWithInfo> list(SysUser sysUser, QueryPage queryPage) {
+        Page<UserWithInfo> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        IPage<UserWithInfo> iPage = baseMapper.list(page, sysUser);
+        iPage.getRecords().forEach(user -> {
+            if (user != null) {
+                user.setRoles(sysRoleService.findRolesByUserId(user.getId()));
+            }
         });
-        return TreeUtils.build(treeList);
+        return iPage;
     }
 
     @Override
-    public IPage<SysUser> list(SysUser user, QueryPage queryPage) {
-        Page<SysUser> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
-        return sysUserMapper.list(page, user);
+    public boolean checkName(SysUser sysUser) {
+        if (StringUtils.isBlank(sysUser.getUsername())) {
+            return false;
+        }
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        if (sysUser.getId() != null && sysUser.getId() != 0) {
+            queryWrapper.eq(SysUser::getUsername, sysUser.getUsername());
+            queryWrapper.ne(SysUser::getId, sysUser.getId());
+        } else {
+            queryWrapper.eq(SysUser::getUsername, sysUser.getUsername());
+        }
+        return baseMapper.selectList(queryWrapper).size() <= 0;
     }
 
     @Override
     @Transactional
-    public void add(SysUserWithRole user) {
-        user.setCreateTime(new Date());
-        user.setModifyTime(new Date());
-        user.setSex("0");
-        //TODO
-        user.setSalt("xxxxx");
-        this.save(user);
-        saveUserRole(user);
+    public void add(UserInfo userInfo) {
+        userInfo.getUser().setCreateTime(new Date());
+        passwordEncoder.encode(userInfo.getUser().getPassword());
+        baseMapper.insert(userInfo.getUser());
+        this.addUserRole(userInfo);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        sysUserMapper.deleteById(id);
+        baseMapper.deleteById(id);
         sysUserRoleService.deleteUserRolesByUserId(id);
     }
 
-    private void saveUserRole(SysUserWithRole user) {
-        user.getRoleIds().forEach(roleId -> {
-            SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(user.getId());
-            userRole.setRoleId(roleId);
-            sysUserRoleMapper.insert(userRole);
+    /**
+     * 根据UserInfo保存用户与角色之前的关联
+     */
+    private void addUserRole(UserInfo userInfo) {
+        if (userInfo.getRoles() == null) {
+            return;
+        }
+        userInfo.getRoles().forEach(sysRole -> {
+            SysUserRole sysUserRole = new SysUserRole()
+                    .setUserId(userInfo.getUser().getId())
+                    .setRoleId(sysRole.getId());
+            sysUserRoleMapper.insert(sysUserRole);
         });
     }
 
     @Override
     @Transactional
-    public void update(SysUserWithRole user) {
-        user.setPassword(null);
-        user.setModifyTime(new Date());
-        this.updateById(user);
+    public void update(UserInfo userInfo) {
+        userInfo.getUser().setPassword(null);
+        this.updateById(userInfo.getUser());
 
-        //删除与此用户关联的角色的关联信息，并建议建立用户角色新的关联
-        sysUserRoleService.deleteUserRolesByUserId(user.getId());
-        saveUserRole(user);
+        // 删除之前用户与角色表之前的关联，并重新建立关联
+        sysUserRoleService.deleteUserRolesByUserId(userInfo.getUser().getId());
+        this.addUserRole(userInfo);
     }
 
     @Override
     @Transactional
-    public void updatePassword(String password) {
-        //TODO
+    public void updatePass(SysUser sysUser) {
+        SysUser user = new SysUser()
+                .setId(sysUser.getId())
+                .setPassword(passwordEncoder.encode(sysUser.getPassword()));
+        baseMapper.updateById(user);
     }
-
-    @Override
-    public boolean checkName(String name, String id) {
-        if (StringUtils.isBlank(name)) {
-            return false;
-        }
-        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
-        if (StringUtils.isNotBlank(id)) {
-            queryWrapper.eq(SysUser::getUsername, name);
-            queryWrapper.ne(SysUser::getId, id);
-        } else {
-            queryWrapper.eq(SysUser::getUsername, name);
-        }
-        return sysUserMapper.selectList(queryWrapper).size() <= 0;
-    }
-
-
 }

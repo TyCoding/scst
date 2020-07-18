@@ -3,6 +3,7 @@ package cn.tycoding.scst.system.api.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @date 2020/7/13
  */
 @Data
+@Accessors(chain = true)
 @TableName(value = "sys_user_role")
 public class SysUserRole implements Serializable {
 

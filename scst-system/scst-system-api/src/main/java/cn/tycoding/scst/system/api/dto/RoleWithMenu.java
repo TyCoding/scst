@@ -1,26 +1,26 @@
-package cn.tycoding.scst.system.api.entity;
+package cn.tycoding.scst.system.api.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import cn.tycoding.scst.system.api.entity.SysRole;
 import lombok.Data;
 
 import java.util.List;
 
 /**
+ * 作为SysRole类的增强类，继承SysRole，扩展存储菜单信息
+ *
  * @author tycoding
  * @date 2020/7/13
  */
 @Data
-public class SysRoleWithMenu extends SysRole {
+public class RoleWithMenu extends SysRole {
 
     /**
      * 菜单ID
      */
-    @TableField(exist = false)
     private Long menuId;
 
     /**
      * 菜单ID集合
      */
-    @TableField(exist = false)
     private List<Long> menuIds;
 }

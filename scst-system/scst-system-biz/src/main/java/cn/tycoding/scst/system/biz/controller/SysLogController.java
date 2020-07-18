@@ -8,21 +8,30 @@ import cn.tycoding.scst.common.web.utils.QueryPage;
 import cn.tycoding.scst.system.api.entity.SysLog;
 import cn.tycoding.scst.system.biz.service.SysLogService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 日志表 前端控制器
+ *
  * @author tycoding
  * @date 2020/7/13
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/log")
-@Api(value = "SysLogController", tags = {"日志管理接口"})
+@Api(value = "SysLogController", tags = {"日志管理模块"})
 public class SysLogController extends BaseController {
 
-    @Autowired
-    private SysLogService sysLogService;
+    private final SysLogService sysLogService;
 
+    /**
+     * 分页、条件查询
+     *
+     * @param log       查询条件
+     * @param queryPage 分页条件
+     * @return
+     */
     @PostMapping("/list")
     public R list(@RequestBody SysLog log, QueryPage queryPage) {
         return new R<>(super.getData(sysLogService.list(log, queryPage)));
@@ -41,8 +50,8 @@ public class SysLogController extends BaseController {
     }
 
     @PostMapping
-    public R saveLog(@RequestBody SysLog sysLog) {
-        sysLogService.saveLog(sysLog);
+    public R add(@RequestBody SysLog sysLog) {
+        sysLogService.add(sysLog);
         return new R();
     }
 }

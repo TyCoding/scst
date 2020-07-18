@@ -24,5 +24,5 @@ public interface SysLogService extends IService<SysLog> {
     /**
      * 保存操作日志
      */
-    void saveLog(SysLog log);
+    void add(SysLog log);
 }

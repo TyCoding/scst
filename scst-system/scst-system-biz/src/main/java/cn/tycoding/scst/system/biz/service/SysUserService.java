@@ -1,11 +1,11 @@
 package cn.tycoding.scst.system.biz.service;
 
 import cn.tycoding.scst.common.web.utils.QueryPage;
-import cn.tycoding.scst.system.api.dto.Tree;
+import cn.tycoding.scst.system.api.dto.MenuTree;
 import cn.tycoding.scst.system.api.dto.UserInfo;
+import cn.tycoding.scst.system.api.dto.UserWithInfo;
 import cn.tycoding.scst.system.api.entity.SysMenu;
 import cn.tycoding.scst.system.api.entity.SysUser;
-import cn.tycoding.scst.system.api.entity.SysUserWithRole;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -30,22 +30,27 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 根据ID查询
      */
-    SysUserWithRole findById(Long id);
+    UserInfo findById(Long id);
 
     /**
-     * 根据用户名获取菜单信息
+     * 根据用户ID获取菜单信息
      */
-    List<Tree<SysMenu>> getMenus(String username);
+    List<MenuTree<SysMenu>> getMenuByUserId(Long id);
 
     /**
      * 查询用户集合数据
      */
-    IPage<SysUser> list(SysUser user, QueryPage queryPage);
+    IPage<UserWithInfo> list(SysUser user, QueryPage queryPage);
+
+    /**
+     * 校验当前名称是否存在
+     */
+    boolean checkName(SysUser sysUser);
 
     /**
      * 新增
      */
-    void add(SysUserWithRole user);
+    void add(UserInfo userInfo);
 
     /**
      * 删除，并删除与该角色相关的权限信息
@@ -55,15 +60,10 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 更新
      */
-    void update(SysUserWithRole user);
+    void update(UserInfo userInfo);
 
     /**
      * 修改密码
      */
-    void updatePassword(String password);
-
-    /**
-     * 校验当前名称是否存在
-     */
-    boolean checkName(String name, String id);
+    void updatePass(SysUser sysUser);
 }

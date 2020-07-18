@@ -30,31 +30,6 @@ public class Tree<T> {
     private String name;
 
     /**
-     * 路由地址
-     */
-    private String path;
-
-    /**
-     * 组件地址
-     */
-    private String component;
-
-    /**
-     * icon
-     */
-    private String icon;
-
-    /**
-     * 节点类型
-     */
-    private String type;
-
-    /**
-     * 权限标识
-     */
-    private String perms;
-
-    /**
      * 子节点
      */
     private List<Tree<T>> children = new ArrayList<>();

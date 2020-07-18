@@ -5,7 +5,6 @@ import cn.tycoding.scst.system.biz.mapper.SysRoleMenuMapper;
 import cn.tycoding.scst.system.biz.service.SysRoleMenuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements SysRoleMenuService {
 
-    @Autowired
-    private SysRoleMenuMapper sysRoleMenuMapper;
-
     @Override
     @Transactional
     public void deleteRoleMenusByRoleId(Long roleId) {
         LambdaQueryWrapper<SysRoleMenu> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysRoleMenu::getRoleId, roleId);
-        sysRoleMenuMapper.delete(queryWrapper);
+        baseMapper.delete(queryWrapper);
     }
 
     @Override
@@ -32,6 +28,6 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
     public void deleteRoleMenusByMenuId(Long menuId) {
         LambdaQueryWrapper<SysRoleMenu> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysRoleMenu::getMenuId, menuId);
-        sysRoleMenuMapper.delete(queryWrapper);
+        baseMapper.delete(queryWrapper);
     }
 }

@@ -12,12 +12,12 @@ import java.util.List;
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     /**
-     * 根据用户名查询此用户可访问的菜单列表
+     * 根据用户ID查询此用户可访问的菜单列表
      *
-     * @param username
+     * @param id
      * @return
      */
-    List<SysMenu> findUserMenus(String username);
+    List<SysMenu> findPermissionsByUserId(Long id);
 
     /**
      * 改变父节点

@@ -1,7 +1,7 @@
 package cn.tycoding.scst.system.biz.mapper;
 
 import cn.tycoding.scst.system.api.entity.SysRole;
-import cn.tycoding.scst.system.api.entity.SysRoleWithMenu;
+import cn.tycoding.scst.system.api.dto.RoleWithMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
-    List<SysRole> findUserRoles(String username);
+    List<SysRole> findRolesByUserId(Long id);
 
-    List<SysRoleWithMenu> findById(Long id);
+    List<RoleWithMenu> findById(Long id);
 }
