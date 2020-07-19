@@ -74,6 +74,8 @@ ScstVisualAdminApplication
 
 ## Docs
 
+**项目文档：[https://docs.scst.tycoding.cn](https://docs.scst.tycoding.cn)**
+
 后续将在我的公众号 **程序员涂陌** 中陆续发布，请持续关注！
 
 | 程序员涂陌                                                  |
