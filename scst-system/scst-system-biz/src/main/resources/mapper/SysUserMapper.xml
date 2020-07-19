@@ -8,10 +8,13 @@
         from sys_user u, sys_dept d
         where u.dept_id = d.id
         <if test="user.username != null and user.username != ''">
-            and username like concat ('%', #{user.username}, '%')
+            and u.username like concat ('%', #{user.username}, '%')
+        </if>
+        <if test="user.deptId != null">
+            and u.deptId = #{user.deptId}
         </if>
         <if test="user.status != null">
-            and status = #{user.status}
+            and u.status = #{user.status}
         </if>
         order by u.id
     </select>

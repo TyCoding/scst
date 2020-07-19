@@ -26,7 +26,7 @@ watch: {
 
 ## ElementUI小技巧
 
-### 清空ElementUI `form` 表单校验状态
+### Form组件清除表单校验状态
 
 ```vue
 if (this.$refs['form'] !== undefined) {
@@ -34,7 +34,7 @@ if (this.$refs['form'] !== undefined) {
 }
 ```
 
-### ElementUI Tree组件多选改为单选
+### Tree组件多选改为单选
 
 ElementUI Tree组件官方文档：[https://element.eleme.cn/#/zh-CN/component/tree](https://element.eleme.cn/#/zh-CN/component/tree)
 
@@ -79,3 +79,34 @@ checkChange(data, node, self) {
     }
 }
 ```
+
+### Radio组件绑定Boolean类型参数
+
+正常情况使用`<el-radio>`组件，需要使用`v-model`绑定选中按钮的`label`值：
+
+```html
+  <template>
+    <el-radio v-model="radio" label="true">true</el-radio>
+    <el-radio v-model="radio" label="false">false</el-radio>
+  </template>
+```
+
+```vue
+data () {
+  return {
+    radio: ''
+  };
+}
+```
+
+如果`v-model`绑定的是字符串，上述写法是完全没问题的，但如果绑定的参数是Boolean类型，上述写法就失效了：
+
+```vue
+data () {
+  return {
+    radio: true
+  };
+}
+```
+
+

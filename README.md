@@ -70,7 +70,7 @@ ScstVisualAdminApplication
 
 ## Thanks
 
-[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig) 项目中很多地方借鉴`pig`项目设计，非常感谢原作者提供这么优质的开源项目。
+[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig) 非常感谢原作者提供这么优质的开源项目。
 
 ## Docs
 
