@@ -1,6 +1,6 @@
 package cn.tycoding.scst.gateway.config;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.support.NameUtils;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Component
 @Primary
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RegistrySwaggerResourcesProvider implements SwaggerResourcesProvider {
 
     private final RouteLocator routeLocator;
@@ -36,7 +36,7 @@ public class RegistrySwaggerResourcesProvider implements SwaggerResourcesProvide
                 .filter(predicateDefinition -> "Path".equalsIgnoreCase(predicateDefinition.getName()))
                 .filter(predicateDefinition -> !"scst-auth".equalsIgnoreCase(routeDefinition.getId()))
                 .forEach(predicateDefinition -> resources.add(swaggerResource(routeDefinition.getId(), predicateDefinition.getArgs()
-                .get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**", "v2/api-docs")))));
+                .get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**", "/v2/api-docs")))));
         return resources;
     }
 

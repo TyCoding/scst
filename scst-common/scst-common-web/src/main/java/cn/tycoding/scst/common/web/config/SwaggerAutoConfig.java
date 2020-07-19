@@ -15,7 +15,7 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +26,16 @@ import java.util.List;
  * @author tycoding
  * @date 2020/7/13
  */
-@EnableSwagger2WebMvc
+@EnableSwagger2
 @Configuration(proxyBeanMethods = false)
 public class SwaggerAutoConfig {
-    private static final String splitor = ",";
+    private static final String SPLITOR = ",";
 
     @Autowired
     private ScstProperties properties;
 
     @Bean
-    public Docket createRestApi() {
+    public Docket docket() {
         SwaggerProperties swagger = properties.getSwagger();
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo(swagger))
@@ -99,7 +99,7 @@ public class SwaggerAutoConfig {
     private static Function<Class<?>, Boolean> handlerPackage(final String basePackage)     {
         return input -> {
             // 循环判断匹配
-            for (String strPackage : basePackage.split(splitor)) {
+            for (String strPackage : basePackage.split(SPLITOR)) {
                 boolean isMatch = input.getPackage().getName().startsWith(strPackage);
                 if (isMatch) {
                     return true;
