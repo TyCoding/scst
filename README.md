@@ -68,9 +68,9 @@ ScstVisualSentinelApplication
 ScstVisualAdminApplication
 ```
 
-## 鸣谢
+## Thanks
 
-[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig) 项目中很多地方借鉴`pig`项目设计，非常感谢原作者提供这么好的开源项目。
+[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig) 项目中很多地方借鉴`pig`项目设计，非常感谢原作者提供这么优质的开源项目。
 
 ## Docs
 
@@ -81,6 +81,30 @@ ScstVisualAdminApplication
 | 程序员涂陌                                                  |
 | ----------------------------------------------------------- |
 | ![qrcode_for_gh](http://cdn.tycoding.cn/20200610184737.jpg) |
+
+## Preview
+
+![截屏2020-07-19 下午12.42.25](http://cdn.tycoding.cn/20200719124235.png)
+
+![截屏2020-07-19 下午12.43.00](http://cdn.tycoding.cn/20200719124303.png)
+
+![截屏2020-07-19 下午12.43.13](http://cdn.tycoding.cn/20200719124315.png)
+
+![截屏2020-07-19 下午12.43.54](http://cdn.tycoding.cn/20200719124359.png)
+
+![截屏2020-07-19 下午12.44.11](http://cdn.tycoding.cn/20200719124414.png)
+
+![截屏2020-07-19 下午12.44.25](http://cdn.tycoding.cn/20200719124428.png)
+
+![截屏2020-07-19 下午12.44.40](http://cdn.tycoding.cn/20200719124442.png)
+
+![截屏2020-07-19 下午12.44.55](http://cdn.tycoding.cn/20200719124457.png)
+
+![截屏2020-07-19 下午12.47.21](http://cdn.tycoding.cn/20200719124724.png)
+
+![截屏2020-07-19 下午12.48.51](http://cdn.tycoding.cn/20200719124856.png)
+
+![截屏2020-07-19 下午12.49.12](http://cdn.tycoding.cn/20200719124915.png)
 
 ## Links
 
