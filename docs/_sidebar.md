@@ -1,6 +1,11 @@
 - **使用文档**
-  - [导入准备](docs/install/01ready.md)
-  - [导入项目](docs/install/02install.md)
+  - **前端**
+    - [环境配置](docs/install/app/ready.md)
+    - [导入项目](docs/install/app/install.md)
+  - **后端**
+    - [环境配置](docs/install/api/ready.md)
+    - [导入项目](docs/install/api/install.md)
+    - [运行项目](docs/install/api/run.md)
 - **设计文档**
   - **前端**
   - **后端**
