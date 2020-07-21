@@ -130,7 +130,7 @@ public class SysUserController extends BaseController {
     }
 
     @Log("修改密码")
-    @PostMapping("/updatePass")
+    @PutMapping("/updatePass")
     public R updatePass(@RequestBody SysUser sysUser) {
         sysUserService.updatePass(sysUser);
         return new R();

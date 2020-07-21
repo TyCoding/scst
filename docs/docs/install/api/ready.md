@@ -72,7 +72,7 @@ JDK8官方下载地址：[https://www.oracle.com/technetwork/java/javase/downloa
 </dependency>
 ```
 
-IDEA也需要安装`lombok`插件，不然当运行项目时，IDEA会报错很多`Class`找不到`getter/setter`方法：
+IDEA也需要安装`lombok`插件，不然当运行项目时，IDEA会报错`Class`找不到`getter/setter`方法：
 
 ![截屏2020-07-18 上午7.08.07](http://cdn.tycoding.cn/20200718070821.png)
 

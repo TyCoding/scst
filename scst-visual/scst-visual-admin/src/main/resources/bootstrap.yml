@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: scst-visual-admin
-
   profiles:
     active: dev
   cloud:
@@ -16,3 +15,12 @@ spring:
         file-extension: yml
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
+  security:
+    user:
+      name: scst
+      password: scst
+  boot:
+    admin:
+      ui:
+        title: SCST 服务监控
