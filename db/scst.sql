@@ -233,10 +233,10 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_menu` VALUES (1, '权限管理', 0, '/auth', NULL, 'menu', 'permission', NULL, 0, 0);
-INSERT INTO `sys_menu` VALUES (2, '用户管理', 1, 'user', 'user:list', 'menu', 'peoples', '/auth/user/index', 0, 0);
-INSERT INTO `sys_menu` VALUES (3, '角色管理', 1, 'role', 'role:list', 'menu', 'role', '/auth/role/index', 0, 0);
-INSERT INTO `sys_menu` VALUES (4, '菜单管理', 1, 'menu', 'menu:list', 'menu', 'menu', '/auth/menu/index', 0, 0);
-INSERT INTO `sys_menu` VALUES (5, '部门管理', 1, 'dept', 'dept:list', 'menu', 'tree', '/auth/dept/index', 0, 0);
+INSERT INTO `sys_menu` VALUES (2, '用户管理', 1, 'user', 'user:list', 'menu', 'peoples', '/scst/auth/user/index', 0, 0);
+INSERT INTO `sys_menu` VALUES (3, '角色管理', 1, 'role', 'role:list', 'menu', 'role', '/scst/auth/role/index', 0, 0);
+INSERT INTO `sys_menu` VALUES (4, '菜单管理', 1, 'menu', 'menu:list', 'menu', 'menu', '/scst/auth/menu/index', 0, 0);
+INSERT INTO `sys_menu` VALUES (5, '部门管理', 1, 'dept', 'dept:list', 'menu', 'tree', '/scst/auth/dept/index', 0, 0);
 INSERT INTO `sys_menu` VALUES (6, '新增用户', 2, NULL, 'user:add', 'button', NULL, NULL, 1, 0);
 INSERT INTO `sys_menu` VALUES (7, '修改用户', 2, NULL, 'user:update', 'button', NULL, NULL, 1, 0);
 INSERT INTO `sys_menu` VALUES (8, '删除用户', 2, NULL, 'user:delete', 'button', NULL, NULL, 1, 0);
@@ -250,7 +250,7 @@ INSERT INTO `sys_menu` VALUES (15, '新增部门', 5, NULL, 'dept:add', 'button'
 INSERT INTO `sys_menu` VALUES (16, '修改部门', 5, NULL, 'dept:update', 'button', NULL, NULL, 1, 0);
 INSERT INTO `sys_menu` VALUES (17, '删除部门', 5, NULL, 'dept:delete', 'button', NULL, NULL, 1, 0);
 INSERT INTO `sys_menu` VALUES (31, '系统管理', 0, '/system', NULL, 'menu', 'setting', NULL, 0, 0);
-INSERT INTO `sys_menu` VALUES (32, '日志管理', 31, 'log', NULL, 'menu', 'log', '/system/log/index', 0, 0);
+INSERT INTO `sys_menu` VALUES (32, '日志管理', 31, 'log', NULL, 'menu', 'log', '/scst/system/log/index', 0, 0);
 INSERT INTO `sys_menu` VALUES (61, '系统监控', 0, '/monitor', NULL, 'menu', 'monitor', NULL, 0, 0);
 INSERT INTO `sys_menu` VALUES (62, '注册中心', 61, 'http://scst-nacos:8848/nacos', NULL, 'menu', 'monitor', NULL, 0, 1);
 INSERT INTO `sys_menu` VALUES (63, '服务监控', 61, 'http://scst-admin:5001', NULL, 'menu', 'service-monitor', NULL, 0, 1);
